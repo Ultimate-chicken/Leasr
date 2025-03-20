@@ -1,5 +1,6 @@
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
+import java.util.HashMap;
+import java.util.Scanner;
 
 /**
  * Write a description of class ControllerClass here.
@@ -9,29 +10,166 @@ import javax.swing.JOptionPane;
  */
 public class ControllerClass
 {
+    //arrayLists
     private ArrayList<Lease> leaseList;
-    protected ArrayList<Product> productList;
+    private ArrayList<Product> productList;
 
-    /**
-     * Constructor for objects of class ControllerClass
-     */
-    public ControllerClass()
-    {
-        leaseList = new ArrayList<Lease>();
-        productList = new ArrayList<Product>();
+    //constructor
+public ControllerClass()
+{
+    leaseList = new ArrayList<Lease>();
+    productList = new ArrayList<Product>();
+}
+    
+    //WORKS
+    private int getIndex(String productID) {
+    for(int arrayIndex = 0; arrayIndex<productList.size(); arrayIndex++) {
+        if(productList.get(arrayIndex).getProductID().equals(productID)) {
+        return arrayIndex;
+        }
     }
     
+    System.out.printf("Product ID %s was not found in our database.", productID);
+    return -1;
+}
     
-    //create getIndex. Give getIndex on return of createTestLease method. Use this to create Product ArrayList. 
-    public void createTestLease() {
+    //WORKS. REQUIRES CONVERSION TO TERMINAL INPUT. 
+    public void addProduct(String productID, String productName, String productDescription, String productSupplier, int productStock,
+    double productBasePrice) {
+        Product productObject = new Product (productID, productName, productDescription, productSupplier, productStock, productBasePrice);
+        productList.add(productObject);
+    }
+    
+    //WORKS
+    public void createTestProducts() {
+        
+        Product product1 = new Product("101", "Refrigerator", "Large, stainless steel fridge", "CoolTech", 25, 800);
+        productList.add(product1);
+
+        Product product2 = new Product("102", "Washing Machine", "High-efficiency washer", "CleanCorp", 30, 601);
+        productList.add(product2);
+
+        Product product3 = new Product("103", "Dishwasher", "Quiet, energy-saving dishwasher", "ShinyClean", 15, 451);
+        productList.add(product3);
+
+        Product product4 = new Product("104", "Microwave Oven", "Countertop microwave with sensor cooking", "QuickHeat", 50, 150);
+        productList.add(product4);
+
+        Product product5 = new Product("105", "Sofa", "Comfortable three-seater sofa", "CozyLiving", 10, 900);
+        productList.add(product5);
+
+        Product product6 = new Product("106", "Dining Table", "Solid wood dining table for six", "WoodCraft", 8, 701);
+        productList.add(product6);
+
+        Product product7 = new Product("107", "Bed Frame", "Queen-size platform bed frame", "SleepWell", 20, 550);
+        productList.add(product7);
+
+        Product product8 = new Product("108", "Bookshelf", "Tall, wooden bookshelf with adjustable shelves", "ShelfMaster", 35, 201);
+        productList.add(product8);
+
+        Product product9 = new Product("109", "Toaster", "2 slice toaster, stainless steel", "ToastTime", 60, 35);
+        productList.add(product9);
+
+        Product product10 = new Product("110", "Blender", "High powered blender", "SmoothieKing", 40, 100);
+        productList.add(product10);
+    }
+    
+    //WORKS
+    public void showCatalogue() {
+        System.out.println("\fCatalogue of all products");
+        for (Product productObject : productList) {
+            System.out.println(productObject.toString());
+            System.out.println();
+        }
+    }
+
+    //WORKS.
+    public void deleteProduct(String productID) {
+        Scanner userInput = new Scanner(System.in); 
+
+        System.out.printf("Are you sure you want Delete product %s? Type y for yes and n for no.\n Y/N: ", productID);
+            
+        if (userInput.nextLine().contains("y")) {
+            productList.remove(getIndex(productID));
+            System.out.printf("\n\nProduct %s was successfully removed.", productID);
+            return;
+        } else {
+            return;
+        }
+
+    }
+    
+    //WORKS. NEED TO VALIDATE FOR EXISTING PRODUCT.
+    public void changeProductDetails() {
+        Scanner userInput = new Scanner(System.in); 
+        int selectedOption;
+        
+        System.out.println("\fPlease, select the product where you want to change details: ");
+        int targetIndex = getIndex(userInput.nextLine());
+        
+        System.out.printf("\nPlease, select the field you want to change (indicate the number): \n\n 1. Product ID: %s \n 2. Product name: %s \n 3. Product description: %s \n 4. Product supplier: %s \n 5. Product Stock: %d \n 6. Product Price: %.2f€ \n\n Your choice:", 
+        productList.get(targetIndex).getProductID(), productList.get(targetIndex).getProductName(), productList.get(targetIndex).getProductDescription(), productList.get(targetIndex).getProductSupplier(), productList.get(targetIndex).getProductStock(),
+        productList.get(targetIndex).getProductBasePrice(), productList.get(targetIndex).getProductStatus());
+        selectedOption = Integer.parseInt(userInput.nextLine().trim());
+        
+        switch(selectedOption) {
+            
+            case 1: 
+            System.out.println("\n\n New ID: ");
+            productList.get(targetIndex).setProductID(userInput.nextLine());
+            break;
+            
+            case 2:
+            System.out.println("\n\n New Product Name: ");
+            productList.get(targetIndex).setProductName(userInput.nextLine());
+            break;
+            
+            case 3:
+            System.out.println("\n\n New Product Description: ");
+            productList.get(targetIndex).setProductDescription(userInput.nextLine());
+            break;
+            
+            case 4:
+            System.out.println("\n\n New Product Supplier: ");
+            productList.get(targetIndex).setProductSupplier(userInput.nextLine());
+            break;
+            
+            case 5:
+            System.out.println("\n\n New Product Stock: ");
+            productList.get(targetIndex).setProductStock(Integer.parseInt(userInput.nextLine()));
+            break;
+            
+            case 6:
+            System.out.println("\n\nNew Product Base Price: ");
+            productList.get(targetIndex).setProductBasePrice(Double.parseDouble(userInput.nextLine()));
+            break;
+            
+        }
+        
+        System.out.println("\n\n Product details have been succesfully changed.");
+    }
+    
+    //WORKS
+    public void showStockReport() {
+        System.out.println("\fCurrent stock levels for all products (Name/ID: Stock):\n");
+        for (Product productObject : productList) {
+            System.out.println(productObject.getProductName() + "/" + productObject.getProductID() + ": " + productObject.getProductStock());
+        }
+    }
+    
+
+    //more methods
+    
+    /*create getIndex. Give getIndex on return of createTestLease method. Use this to create Product ArrayList. 
+    private void createTestLease() {
         leaseList.add(new Lease("123456789", "Juan Antonio", "test@gmail.com", "34 660 791 13 12", 50));
         //leaseList.get(getIndex("123456789")).productList.add(new Product("Chair", 50));
         //productList.add(new Product("Chair", 50));
-        for (Lease Lease : leaseList) {
-            System.out.print(Lease.getLesseeEmail());
-        }
-    }
+    } */
 
     
     
 }
+
+//SOURCES
+//https://www.youtube.com/watch?v=H62Jfv1DJlU
