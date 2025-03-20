@@ -29,19 +29,21 @@ public class Product
         this.productBasePrice = productBasePrice;
         this.productStatus = true;
         
-        System.out.println("\f");
+        System.out.println("Product Creation successfull!\n");
         System.out.println(this.toString());
+        System.out.println("\n\n");
     }
     
+    //WORKS
     @Override
     public String toString() {
     return "Product Details:\n" +
-           "ID: " + this.getProductID() + "\n" +
-           "Name: " + this.getProductName() + "\n" +
-           "Description: " + this.getProductDescription() + "\n" +
-           "Supplier: " + this.getProductSupplier() + "\n" +
-           "Stock: " + this.getProductStock() + "\n" +
-           "Base Price: " + this.getProductBasePrice() + "\n" +
+           "ID: " + this.getProductID() + "€\n" +
+           "Name: " + this.getProductName() + "€\n" +
+           "Description: " + this.getProductDescription() + "€\n" +
+           "Supplier: " + this.getProductSupplier() + "€\n" +
+           "Stock: " + this.getProductStock() + "€\n" +
+           "Base Price: " + this.getProductBasePrice() + "€\n" +
            "Status: " + this.getProductStatus();
 }
     
@@ -87,8 +89,12 @@ public void setProductDescription(String productDescription) {
     this.productDescription = productDescription;
 }
 
-public void setProductStock(int changeAmount) {
-    this.productStock = productStock;
+public void setProductSupplier(String productSupplier) {
+    this.productSupplier = productSupplier;
+}
+
+public void setProductStock(int newStock) {
+    this.productStock = newStock;
 }
 
 public void setProductBasePrice(double productBasePrice) {
