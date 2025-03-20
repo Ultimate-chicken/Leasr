@@ -17,7 +17,7 @@ public class Contract
 
     //protected ArrayList<Product> productList;
 
-    public Lease(String contractID, Account account, Product products, double totalCost)
+    public Contract(String contractID, Account account, Product products, double totalCost)
     {
         this.contractStatus = true;
         this.contractID = contractID;
