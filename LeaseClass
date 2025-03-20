@@ -1,0 +1,52 @@
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
+/**
+ * Write a description of class Lease here.
+ *
+ * @author (your name)
+ * @version (a version number or a date)
+ */
+public class Lease
+{
+    private String leaseID;
+    private String lesseeName;
+    private String lesseeEmail;
+    private String lesseePhone;
+    //private String leaseStartDate;
+    //private String leaseEndDate;
+    private double leaseMonthlyCost;
+    private boolean leaseActive;
+    
+    protected ArrayList<Product> productList;
+
+    public Lease(String leaseID, String lesseeName, String lesseeEmail, String lesseePhone, 
+    double leaseMonthlyCost)
+    {
+        this.leaseActive = true;
+        this.leaseID = leaseID;
+        this.lesseeName = lesseeName;
+        this.lesseeEmail = lesseeEmail;
+        this.lesseePhone = lesseePhone;
+        this.leaseMonthlyCost = leaseMonthlyCost;
+        
+        productList.add(new Product("Chair", 50));
+        
+        for (Product Product : productList) {
+            System.out.print(Product.getProductName());
+        }
+    }
+
+    public String getLeaseID() {
+        return leaseID;
+    }
+    
+    public String getLesseeName() {
+        return lesseeName;
+    }
+    
+    public String getLesseeEmail() {
+        return lesseeEmail;
+    }
+  
+}
