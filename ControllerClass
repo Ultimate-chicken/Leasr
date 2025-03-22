@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Date;
 
 /**
  * Write a description of class ControllerClass here.
@@ -11,13 +12,13 @@ import java.util.Scanner;
 public class ControllerClass
 {
     //arrayLists
-    private ArrayList<Lease> leaseList;
+    private ArrayList<Contract> contractList;
     private ArrayList<Product> productList;
 
     //constructor
 public ControllerClass()
 {
-    leaseList = new ArrayList<Lease>();
+    contractList = new ArrayList<Contract>();
     productList = new ArrayList<Product>();
 }
     
@@ -157,7 +158,31 @@ public ControllerClass()
         }
     }
     
-
+    public void createContract() {
+        Scanner userInput = new Scanner(System.in); 
+        System.out.println("\fPlease, select type of contract you would like to create (indicate number): \n\n 1.Purchase 2.Lease 3.Rent-to-own \n\n");
+        
+        if (userInput.nextInt() == 1) {
+            createPurchase();
+        }
+        
+        
+        
+        
+    }
+    
+    private void createPurchase() {
+        
+        contractList.add(new Purchase(new Date(123, 10, 5), 24, "123456", 30));
+        
+        //foreach contract, check if subtype purchase, cast contract to purchase, and use getter
+        for(Contract contract : contractList) {
+            if(contract instanceof Purchase) {
+            System.out.println(((Purchase)contract).toString());
+            }
+        }
+    }
+    
     //more methods
     
     /*create getIndex. Give getIndex on return of createTestLease method. Use this to create Product ArrayList. 
@@ -173,3 +198,7 @@ public ControllerClass()
 
 //SOURCES
 //https://www.youtube.com/watch?v=H62Jfv1DJlU
+//https://www.youtube.com/watch?v=QvHBHuuddYk
+//https://www.youtube.com/watch?v=HvPlEJ3LHgE&list=WL&index=3
+//https://www.youtube.com/watch?v=Qb_NUn0TSAU&list=WL&index=1
+//https://www.youtube.com/watch?v=jhDUxynEQRI&list=WL&index=2 
