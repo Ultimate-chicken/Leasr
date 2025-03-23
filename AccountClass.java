@@ -1,72 +1,84 @@
 import java.util.ArrayList;
 import java.util.Date;
 
+
 /**
  * Write a description of class AccountClass here.
  *
  * @author (your name)
  * @version (a version number or a date)
  */
-public class AccountClass
+public class Account
 {
-    private String accountID;   
-    private String accountType;
-    private String user;
-    private Date date;
-    private boolean isVerified;
-    private ArrayList<Contract> contractList;
+    private String accountID; 
+    private String fullName;
+    private String userEmail;
+    private Date creationDate;
+    private boolean isAdmin;
+    private boolean isActive;
 
     /**
      * Constructor for objects of class AccountClass
      */
-    public AccountClass(String accountID, String user,String accountType)
-    {
-        Date today = new Date();
+    public Account(String accountID, String fullName, String userEmail, Date creationDate) {
         this.accountID = accountID;
-        this.user = user;
-        this.date = today;
-        this.accountType = accountType;
-        this.isVerified = false;
+        this.fullName = fullName;
+        this.userEmail = userEmail;
+        this.creationDate = creationDate;
+        this.isAdmin = isAdmin;
+        this.isActive = true;
     }
-     public void addContract(Contract contract) {
-        contractList.add(contract);
+    
+    @Override
+    public String toString() {
+        return "Account details: \n\nAccount ID: " + getAccountID() +
+                "\nFull Name: " + getFullName() +
+                "\nEmail: " + getUserEmail() +
+                "\nCreation Date: " + getCreationDate() +
+                "\nAdmin: " + isAdmin() +
+                "\nActive: " + isActive();
     }
-     public String toString() {
-        return "Account Details:\n" +
-               "ID: " + accountID + "\n" +
-               "User: " + user + "\n" +
-               "Date created: " + date + "\n" +
-               "accountType: " + accountType + "\n" +
-               "isVerified: " + (isVerified ? "Verified" : "Unverified") + "\n" +
-               "Total Contracts: " + contractList.size();
+    
+    // Getters
+    public String getAccountID() {
+        return accountID;
     }
-    //Getters
-        public String getAccountID() {
-            return accountID;
-        }
-         public String getUser() {
-            return user;
-        }
-         public String accountType() {
-            return accountType;
-        }
-        public boolean getisVerified() {
-            return isVerified;
-        }
-    //Setters
-        public String setAccountID(String id) {
-            this.accountID = id;
-        }
-         public String setUser(String user) {
-            this.user = user;
-        }
-         public String setaccountType(String type) {
-             this.accountType = type;
-        }
-         public boolean setisVerified(boolean verified) {
-            this.isVerified = verified;
-        }
 
+    public String getFullName() {
+        return fullName;
+    }
 
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+    
+    // Setters!
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public void setAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }
   
-}
+} 
