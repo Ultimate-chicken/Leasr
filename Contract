@@ -11,6 +11,9 @@
 //overloading can be the same but with different paramters. 
 //instanceof is to check the subclass. 
 
+
+import java.util.ArrayList;
+
 /**
  * Write a description of class Contract here.
  *
@@ -20,19 +23,33 @@
 public abstract class Contract
 {
     private String contractID;
+    protected ArrayList<Product> productSelection;
+    private Account linkedAccount;
     private double totalCost;
     private boolean isActive;
     
     /**
      * Constructor for objects of class Contract
      */
-    public Contract(String contractID, double totalCost)
+    public Contract(String contractID, ArrayList<Product> productSelection, Account linkedAccount)
     {
         this.contractID = contractID;
-        this.totalCost = totalCost;
+        this. productSelection = productSelection;
+        this.linkedAccount = linkedAccount;
+        
+        for (Product product : productSelection) {
+            this.totalCost += product.getProductBasePrice();
+        }
+        
         this.isActive = true;
     }
     
+        @Override
+    public String toString() {
+        return "\nContract ID: " + getContractID() +
+               "\nTotal Cost: " + getTotalCost() + "€" ;
+    }
+
     public String getContractID() {
         return contractID;
     }
@@ -43,6 +60,14 @@ public abstract class Contract
 
     public boolean isActive() {
         return isActive;
+    }
+    
+    public String getAccountDetails() {
+        return linkedAccount.toString();
+    }
+    
+    public String getAccountID() {
+        return linkedAccount.getAccountID();
     }
     
     //OK. create arrayList of products and addProduct method in contract. Use a getIndex by using productID. 
