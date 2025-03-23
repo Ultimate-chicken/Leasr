@@ -1,5 +1,10 @@
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import java.util.HashMap;
+
+//for features, consider using sets instead of arrayList because it doesn't allow for duplicates. 
+//Adding elements to set: set.add(). Relate to input. 
+//Ok so for the features array, create 2 parallel arrays: 1 with features, other with content. Relate content to index in features. 
 
 /**
  * Write a description of class Product here.
@@ -37,13 +42,13 @@ public class Product
     //WORKS
     @Override
     public String toString() {
-    return "Product Details:\n" +
-           "ID: " + this.getProductID() + "€\n" +
-           "Name: " + this.getProductName() + "€\n" +
-           "Description: " + this.getProductDescription() + "€\n" +
-           "Supplier: " + this.getProductSupplier() + "€\n" +
-           "Stock: " + this.getProductStock() + "€\n" +
-           "Base Price: " + this.getProductBasePrice() + "€\n" +
+        return "Product Details:\n" +
+           "ID: " + this.getProductID() + "\n" +
+           "Name: " + this.getProductName() + "\n" +
+           "Description: " + this.getProductDescription() + "\n" +
+           "Supplier: " + this.getProductSupplier() + "\n" +
+           "Stock: " + this.getProductStock() + "\n" +
+           "Base Price: " + String.format("%.2f€", this.getProductBasePrice()) + "\n" +
            "Status: " + this.getProductStatus();
 }
     
