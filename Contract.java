@@ -11,8 +11,8 @@
 //overloading can be the same but with different paramters. 
 //instanceof is to check the subclass. 
 
-
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Write a description of class Contract here.
@@ -20,55 +20,57 @@ import java.util.ArrayList;
  * @author (your name)
  * @version (a version number or a date)
  */
-public abstract class Contract
-{
+public abstract class Contract {
     private String contractID;
     protected ArrayList<Product> productSelection;
     private Account linkedAccount;
     private double totalCost;
     private boolean isActive;
-    
-    /**
-     * Constructor for objects of class Contract
-     */
-    public Contract(String contractID, ArrayList<Product> productSelection, Account linkedAccount)
-    {
+    private Date contractDate;
+
+    public Contract(String contractID, ArrayList<Product> productSelection, Account linkedAccount) {
         this.contractID = contractID;
-        this. productSelection = productSelection;
+        this.productSelection = productSelection;
         this.linkedAccount = linkedAccount;
-        
+        this.contractDate = new Date();
+
+        // calculating total cost
+        this.totalCost = 0;
         for (Product product : productSelection) {
             this.totalCost += product.getProductBasePrice();
         }
-        
         this.isActive = true;
     }
-    
-        @Override
-    public String toString() {
-        return "\nContract ID: " + getContractID() +
-               "\nTotal Cost: " + getTotalCost() + "€" ;
-    }
 
-    public String getContractID() {
+    //Getters
+    public String getContractID() { 
         return contractID;
     }
-    
-    public double getTotalCost() {
-        return totalCost;
+
+    public double getTotalCost() { 
+        return totalCost; 
     }
 
-    public boolean isActive() {
-        return isActive;
+    public boolean isActive() { 
+        return isActive; 
     }
-    
-    public String getAccountDetails() {
-        return linkedAccount.toString();
+
+    public String getAccountID() { 
+        return linkedAccount.getAccountID(); 
     }
-    
-    public String getAccountID() {
-        return linkedAccount.getAccountID();
+
+    public Account getLinkedAccount() { 
+        return linkedAccount;
     }
-    
-    //OK. create arrayList of products and addProduct method in contract. Use a getIndex by using productID. 
+
+    public Date getContractDate() {
+        return contractDate; 
+    }
+
+    @Override
+    public String toString() {
+        return "\nContract ID: " + getContractID() +
+        "\nTotal Cost: " + getTotalCost() + "€" +
+        "\nContract Date: " + contractDate;
+    }
 }
