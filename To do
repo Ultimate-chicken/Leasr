@@ -1,24 +1,16 @@
 Noah
 -Close input scanners everywhere
--turn array of objects into string
-
--Date field in contract
--accountID and Account object. Storing objects or just IDs.
--extends immediate parent or parent of parent?
--rent to own/lease: get total cost from super, divide by amount of months, add interest rate
--clear shoppingCart upon contract execution
-methods changed to public (?)
+-show all leases/all accounts on admin view
+-create rentToOwn/Lease objects
+-check nextInt() is followed by nextLine()
 -deposit calculation mechanism
--close scanners after finishing. If possible create just one. 
+-rent to own/lease: get total cost from super, divide by amount of months, add interest rate
+
+??
+-clear shoppingCart upon contract execution
 -add info like calculations in messages
--ID creation added.
 -the user should select only contract length. sumup total cost, divide, add interest. then show
 
-  // - create deposit calculation mechanism
-        // - add validation to user input
-        // - change messages to more user-friendly tone + add info like calculation etc
-        // - why there is separate scanners everywhere??
-        // - separate view from controller class
-        // - reduce repeatable code
-        // - need to keep everything public for testing purposes
-        // - get basic account done ASAP
+MAX
+- separate view from controller class
+ - add validation to user input
