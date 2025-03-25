@@ -13,3 +13,12 @@ methods changed to public (?)
 -add info like calculations in messages
 -ID creation added.
 -the user should select only contract length. sumup total cost, divide, add interest. then show
+
+  // - create deposit calculation mechanism
+        // - add validation to user input
+        // - change messages to more user-friendly tone + add info like calculation etc
+        // - why there is separate scanners everywhere??
+        // - separate view from controller class
+        // - reduce repeatable code
+        // - need to keep everything public for testing purposes
+        // - get basic account done ASAP
