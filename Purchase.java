@@ -9,45 +9,23 @@ import java.util.ArrayList;
  */
 public class Purchase extends Contract
 {
-    private Date purchaseDate;
     private int warrantyLengthMonths;
     
-    public Purchase(String contractID, Date purchaseDate, ArrayList<Product> productSelection, int warrantyLengthMonths, Account linkedAccount)
+    public Purchase(String contractID, Date purchaseDate, double totalCost, ArrayList<String> productSelection, int warrantyLengthMonths, String linkedAccount)
     {
-        super(contractID, productSelection, linkedAccount);
-        this.purchaseDate = purchaseDate;
+        super(contractID, purchaseDate, totalCost, productSelection, linkedAccount);
         this.warrantyLengthMonths = warrantyLengthMonths;
     }
     
+    
+    
     @Override
     public String toString() {
-        return "\n\nPurchase details: \nPurchase ID: " + getContractID() + "\n\nContract details: " + super.toString() + ". Product details:\n" + getProductDetails() + "Account ID: " + getAccountID() + "\nTotal cost: " + String.format("%.2f", getTotalCost()) + "€\nPurchase date: " 
-        + getPurchaseDate() + "\nWarranty length (months): " + getWarrantyLengthMonths();
+        return "\nPurchase details:\n" + "Purchase ID: " + getContractID() + "\nPurchase Date: " + getCurrentDate() +
+        "\nTotal cost: " + String.format("%.2f€", getTotalCost()) + "\nWarranty length (months): " + getWarrantyLengthMonths();
     }
     
     //getters
-    
-    public String getProductDetails() {
-        String appededProductDetails ="";
-        for (Product product : productSelection) {
-            String productDetails= String.format(
-            "Product ID: %s. Product Name: %s. Product Description: %s. Product Supplier: %s. Product Stock: %d. Product Base Price: %.2f\n",
-            product.getProductID(),
-            product.getProductName(),
-            product.getProductDescription(),
-            product.getProductSupplier(),
-            product.getProductStock(),
-            product.getProductBasePrice()
-            );
-            
-            appededProductDetails += productDetails;
-        }
-        return appededProductDetails;
-    }
-    
-    public Date getPurchaseDate() {
-        return purchaseDate;
-    }
     
     public int getWarrantyLengthMonths() {
         return warrantyLengthMonths;
