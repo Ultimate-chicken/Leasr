@@ -1,0 +1,485 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.Date;
+import java.util.Random;
+
+//Note: the view class should handle all input and output (print, scanner
+
+/**
+ * Write a description of class ControllerClass here.
+ *
+ * @author (your name)
+ * @version (a version number or a date)
+ */
+public class ControllerClass
+{
+    //arrayLists
+    public ArrayList<Contract> contractList;
+    public ArrayList<Product> productList;
+    public ArrayList<Account> accountList;
+    public ArrayList<String> shoppingCart;
+    Random random = new Random();
+    Scanner userInput = new Scanner(System.in);
+
+    //constructor
+    public ControllerClass()
+    {
+        contractList = new ArrayList<Contract>();
+        productList = new ArrayList<Product>();
+        accountList = new ArrayList<Account>();
+        shoppingCart = new ArrayList<String>();
+
+        createTestProducts();
+    }
+
+    /** Admin view. Allows administrators to add/delete product, change/view product details, and show list of products/accounts/leases */
+    public void adminView() {
+        System.out.print("\f");
+        boolean exitTheMatrix = false;
+
+        while (exitTheMatrix == false) {
+            System.out.print("\nPlease, select what you want to do: \n\n1. Add new product \n2. Change product details \n3. Delete product \n4. Show catalogue \n5. Show stock report \n6. View product details \n7. Exit. \n\nYou choice:");
+
+            int userSelection = Integer.parseInt(userInput.nextLine().trim());
+            switch (userSelection) {
+                case 1:
+                    addProduct();
+                    break;
+                case 2:
+                    changeProductDetails();
+                    break;
+                case 3:
+                    deleteProduct();
+                    break;
+                case 4:
+                    showCatalogue();
+                    break;
+                case 5:
+                    showStockReport();
+                    break;
+                case 6:
+                    viewProductDetails();
+                    break;
+                case 7:
+                    exitTheMatrix = true;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter a number between 1 and 7.");
+                    break;
+            }
+        }
+    }
+
+    public void addProduct() {
+        System.out.print("\fPlease, insert details for the new product\n\n");
+        String productID = Integer.toString(1000 + random.nextInt(9999 - 1000));
+        System.out.print("product Name: "); String productName = userInput.nextLine();
+        System.out.print("Product Description: "); String productDescription = userInput.nextLine();
+        System.out.print("Product Supplier: "); String productSupplier = userInput.nextLine();
+        System.out.print("Product Stock: "); int productStock = Integer.parseInt(userInput.nextLine().trim());
+        System.out.print("Product Base Price: "); double productBasePrice = Double.parseDouble(userInput.nextLine().trim());
+
+        for (Product productObject : productList) {
+            if (productObject.getProductName().equals(productName)) {
+                System.out.print("Sorry, this product already exsits!");
+                return;
+            }
+        }
+
+        Product productObject = new Product (productID, productName, productDescription, productSupplier, productStock, productBasePrice);
+        productList.add(productObject);
+    }
+    
+    //WORKS
+    public void showCatalogue() {
+        System.out.println("Catalogue of all products");
+        for (Product productObject : productList) {
+            System.out.println(productObject.toString());
+            System.out.println();
+        }
+    }
+
+    //WORKS.
+    public void deleteProduct() {
+        System.out.print("\nPlease, insert the productID of the product you want to eliminate: "); String productID = userInput.nextLine();
+
+        if (getProductIndex(productID) != -1) {
+            System.out.printf("Are you sure you want Delete product %s? Type y for yes and n for no.\n Y/N: ", productID);
+            if (userInput.nextLine().contains("y")) {
+                productList.remove(getProductIndex(productID));
+                System.out.printf("\nProduct %s was successfully removed.", productID);
+                return;
+            } else {
+                return;
+            }
+        }
+    }
+
+    public void viewProductDetails() {
+        System.out.print("Please, select the product where you want to view details (type product ID): ");
+        int targetIndex = getProductIndex(userInput.nextLine());
+        System.out.print(productList.get(targetIndex).toString());
+    }
+    
+    //WORKS. 
+    public void changeProductDetails() {
+        int selectedOption;
+
+        System.out.print("Please, select the product where you want to change details (type product ID): ");
+        int targetIndex = getProductIndex(userInput.nextLine());
+
+        System.out.printf("\nPlease, select the field you want to change (indicate the number): \n\n 1. Product ID: %s \n 2. Product name: %s \n 3. Product description: %s \n 4. Product supplier: %s \n 5. Product Stock: %d \n 6. Product Price: %.2f€ \n\n Your choice:", 
+            productList.get(targetIndex).getProductID(), productList.get(targetIndex).getProductName(), productList.get(targetIndex).getProductDescription(), productList.get(targetIndex).getProductSupplier(), productList.get(targetIndex).getProductStock(),
+            productList.get(targetIndex).getProductBasePrice(), productList.get(targetIndex).getProductStatus());
+        selectedOption = Integer.parseInt(userInput.nextLine().trim());
+
+        switch(selectedOption) {
+
+            case 1: 
+                System.out.print("\n\n New ID: ");
+                productList.get(targetIndex).setProductID(userInput.nextLine());
+                break;
+
+            case 2:
+                System.out.print("\n\n New Product Name: ");
+                productList.get(targetIndex).setProductName(userInput.nextLine());
+                break;
+
+            case 3:
+                System.out.print("\n\n New Product Description: ");
+                productList.get(targetIndex).setProductDescription(userInput.nextLine());
+                break;
+
+            case 4:
+                System.out.print("\n\n New Product Supplier: ");
+                productList.get(targetIndex).setProductSupplier(userInput.nextLine());
+                break;
+
+            case 5:
+                System.out.print("\n\n New Product Stock: ");
+                productList.get(targetIndex).setProductStock(Integer.parseInt(userInput.nextLine()));
+                break;
+
+            case 6:
+                System.out.print("\n\nNew Product Base Price: ");
+                productList.get(targetIndex).setProductBasePrice(Double.parseDouble(userInput.nextLine()));
+                break;
+
+        }
+
+        System.out.println("\n\nProduct details have been succesfully changed.");
+    }
+
+    //WORKS
+    public void showStockReport() {
+        System.out.println("\fCurrent stock levels for all products (Name/ID: Stock):\n");
+        for (Product productObject : productList) {
+            System.out.println(productObject.getProductName() + "/" + productObject.getProductID() + ": " + productObject.getProductStock());
+        }
+    }
+    
+    /** Customer view. Allow to... */
+    public void customerView() {
+        boolean loginFinished = false;
+        int sessionIndex = -1;
+        System.out.print("\f");
+        
+        while (loginFinished == false) {
+        System.out.print("Please, choose what you want to do: \n1. Show all products \n2. Create an account \n3. Login. \n4. Exit \n\nYour choice: ");
+        int testConversion = Integer.parseInt(userInput.nextLine().trim());
+        switch (testConversion) {
+            case 1:
+            showCatalogue();
+            break;
+            case 2:
+            sessionIndex = getAccountIndex(createAccount());
+            break;
+            case 3:
+            sessionIndex = loginToAccount();
+            break;
+            case 4: 
+            return;
+            default:
+            System.out.print("Invalid choice. Please select an allowed option.");
+        }
+        
+        if (sessionIndex > -1) {
+                boolean exitTheMatrix = false;
+            while (exitTheMatrix == false) {
+                System.out.print("\nPlease, choose what you want to do: \n1. Create contract \n2. Terminate contract \n3. Change contract details \n4. View account/contract details \n5. Logout \n\nYour choice: ");
+                int selectedOption = Integer.parseInt(userInput.nextLine().trim());
+                    switch (selectedOption) {
+                    case 1:
+                    createContract(sessionIndex);
+                    break;
+                    case 2:
+                    terminateContract(sessionIndex);
+                    break;
+                    case 3:
+                    System.out.println("You chose to change contract details!");
+                    // Here you would put the code to change contract details
+                    break;
+                    case 4:
+                    viewAccountDetails(sessionIndex);
+                    break;
+                    case 5: 
+                    exitTheMatrix = true;
+                    System.out.println("Logout Successfull!");    
+                    default:
+                    System.out.println("Invalid choice. Please enter a number between 1 and 5.");
+                    break;
+                }
+            }
+        } 
+    }
+    }
+    
+    //contract termination only refers to recurring contracts
+    public void terminateContract(int sessionIndex) {
+        for (Contract contractObject : contractList) {
+            if (contractObject.getLinkedAccount().equals(accountList.get(sessionIndex).getAccountID())) {
+                if ((contractObject instanceof Lease) || (contractObject instanceof RentToOwn)) {
+                    System.out.print(contractObject.toString());
+                }
+            }
+        }
+        
+        System.out.print("\nOut of your recurring contracts, please, select the contract you want to terminate (type contract ID): ");
+        contractList.remove(contractList.get(getContractIndex(userInput.nextLine())));
+        
+    }
+    
+    public int loginToAccount() {
+        System.out.print("Please, insert account ID: ");
+        String userInputString = userInput.nextLine();
+        
+        if (getAccountIndex(userInputString) > -1) {
+            System.out.print("Login successful. ");
+            return getAccountIndex(userInputString);
+        } else {
+            return -1;
+            }
+    }
+    
+    public String createAccount() {
+        String accountID = Integer.toString(1000 + random.nextInt(9999 - 1000));
+        System.out.print("Please, insert full name: "); String fullName = userInput.nextLine();
+        System.out.print("Please, insert user email: "); String userEmail = userInput.nextLine();
+        accountList.add(new Account(accountID, fullName, userEmail));
+        System.out.print("Account creation successfull!");
+        System.out.print(accountList.get(getAccountIndex(accountID)));
+
+        return accountID;
+    }
+    
+    public void viewAccountDetails(int sessionIndex) {
+        System.out.print(accountList.get(sessionIndex).toString());
+
+        System.out.print("\n\nContracts associated to this account: ");
+        
+        for (Contract contractObject : contractList) {
+            if (contractObject.getLinkedAccount().equals(accountList.get(sessionIndex).getAccountID())) {
+                System.out.print(contractObject.toString());
+            }
+        }
+    } 
+    
+    public void createContract(int sessionIndex) {
+        Random random = new Random();
+
+        showCatalogue();
+        System.out.print("\n\nPlease, select the products you want (Write product IDs, separated by commas. E.g 1009,1010): ");
+        String[] shoppingCartReferences = userInput.nextLine().split(",");
+
+        double totalCartCost = 0;
+        String productDetails = "";
+        
+        for (String reference : shoppingCartReferences) {
+            shoppingCart.add(reference);
+            totalCartCost += productList.get(getProductIndex(reference)).getProductBasePrice();
+            productDetails += reference.toString();
+        }
+
+        // Generate unique contract ID
+        String contractID = Integer.toString(1000 + random.nextInt(9999 - 1000));
+        Date currentDate = new Date(System.currentTimeMillis());
+        String linkedAccount = accountList.get(sessionIndex).getAccountID();
+        
+        System.out.print("\n1. Lease\n2. Rent-to-Own \n3. Purchase \nYour choice: ");
+        
+        int userSelection = Integer.parseInt(userInput.nextLine().trim());
+        switch (userSelection) {
+            case 1:
+                createLease(contractID, currentDate, totalCartCost, productDetails, linkedAccount);
+                break;
+            case 2:
+                System.out.println("You chose Rent-to-Own.");
+                // Add your code here to create a Rent-to-Own contract
+                break;
+            case 3:
+                createPurchase(contractID, currentDate, totalCartCost, productDetails, linkedAccount);
+                break;
+            default:
+                System.out.println("Invalid choice. Please choose 1, 2, or 3.");
+                break;
+        }
+
+        System.out.print(contractList.get(getContractIndex(contractID)).toString());
+        System.out.print("\n\nProducts selected: ");
+        
+        for (String productSelected : contractList.get(getContractIndex(contractID)).getProductSelection()) {
+            System.out.print(productList.get(getProductIndex(productSelected)).toString());
+        }
+        
+        // Choose contract type
+        /*
+         System.out.print("\nSelect contract type:\n1. Lease\n2. Rent-to-Own\nYour choice: ");
+        int contractType = userInput.nextInt(); userInput.nextLine();
+
+        
+        
+        Contract newContract;
+        switch (contractType) {
+
+            case 1: // Lease
+                System.out.print("Enter monthly lease cost: ");
+                double monthlyLeaseCost = userInput.nextDouble();
+                System.out.print("Enter lease duration (months): ");
+                int leaseDuration = userInput.nextInt();
+                System.out.print("Enter deposit amount: ");
+                double depositAmount = userInput.nextDouble();
+
+                newContract = new Lease(contractID, shoppingCart, accountList.get(sessionIndex), 
+                    totalCost, leaseDuration, depositAmount);
+                break;
+
+            case 2: // Rent-to-Own
+                System.out.print("Enter monthly payment: ");
+                double monthlyPayment = userInput.nextDouble();
+                System.out.print("Enter total payment periods: ");
+                int totalPaymentPeriods = userInput.nextInt();
+
+                newContract = new RentToOwn(contractID, shoppingCart, accountList.get(sessionIndex));
+                break;
+
+            default:
+                System.out.println("Invalid contract type.");
+                return;
+        }
+
+        //adding contract into array
+        contractList.add(newContract);
+        System.out.println("Contract created successfully!");
+        System.out.println(newContract); */
+    }
+
+    public void createPurchase(String contractID, Date currentDate, double totalCartCost, String productDetails, String linkedAccount) {
+        contractList.add(new Purchase(contractID, currentDate, totalCartCost, shoppingCart, 24, linkedAccount));
+        System.out.print("Purchase executed successfully!");
+        /* foreach contract, check if subtype purchase, cast contract to purchase, and use getter
+        for(Contract contract : contractList) {
+            System.out.print(contract.toString());
+        } This is for show all leases. */
+    }
+    
+    public void createLease(String contractID, Date currentDate, double totalCartCost, String productDetails, String linkedAccount) {
+        System.out.print("Please, indicate how long you would like to lease these products (in months): "); 
+        
+        int contractLength =  Integer.parseInt(userInput.nextLine().trim());
+        
+        contractList.add(new Lease(contractID, currentDate, totalCartCost, shoppingCart, 33.00, 24.00, "1234", contractLength));
+        System.out.print("Purchase executed successfully!");
+    }
+    
+    public void createRentToOwn() {
+        
+    }
+    
+    //WORKS. GET INDEX (with overloading)
+    public int getProductIndex(String productID) {
+        for(int arrayIndex = 0; arrayIndex<productList.size(); arrayIndex++) {
+            if(productList.get(arrayIndex).getProductID().equals(productID)) {
+                return arrayIndex;
+            }
+        }
+
+        System.out.printf("Product ID %s was not found in our database.", productID);
+        return -1;
+    }
+
+    public int getAccountIndex(String accountID) {
+        for(int arrayIndex = 0; arrayIndex<accountList.size(); arrayIndex++) {
+            if(accountList.get(arrayIndex).getAccountID().equals(accountID)) {
+                return arrayIndex;
+            }
+        }
+
+                    System.out.printf("Sorry, account %s was not found in our database. ", accountID);
+        return -1;
+    }
+    
+    public int getContractIndex(String contractID) {
+        for(int arrayIndex = 0; arrayIndex<contractList.size(); arrayIndex++) {
+            if(contractList.get(arrayIndex).getContractID().equals(contractID)) {
+                return arrayIndex;
+            }
+        }
+
+        System.out.printf("Account ID %s was not found in our database.", contractID);
+        return -1;
+    }   
+
+
+    
+
+    //WORKS. 
+    
+
+    //WORKS
+    public void createTestProducts() {
+
+        Product product1 = new Product("1001", "Refrigerator", "Large, stainless steel fridge", "CoolTech", 25, 800);
+        productList.add(product1);
+
+        Product product2 = new Product("1002", "Washing Machine", "High-efficiency washer", "CleanCorp", 30, 601);
+        productList.add(product2);
+
+        Product product3 = new Product("1003", "Dishwasher", "Quiet, energy-saving dishwasher", "ShinyClean", 15, 451);
+        productList.add(product3);
+
+        Product product4 = new Product("1004", "Microwave Oven", "Countertop microwave with sensor cooking", "QuickHeat", 50, 150);
+        productList.add(product4);
+
+        Product product5 = new Product("1005", "Sofa", "Comfortable three-seater sofa", "CozyLiving", 10, 900);
+        productList.add(product5);
+
+        Product product6 = new Product("1006", "Dining Table", "Solid wood dining table for six", "WoodCraft", 8, 701);
+        productList.add(product6);
+
+        Product product7 = new Product("1007", "Bed Frame", "Queen-size platform bed frame", "SleepWell", 20, 550);
+        productList.add(product7);
+
+        Product product8 = new Product("1008", "Bookshelf", "Tall, wooden bookshelf with adjustable shelves", "ShelfMaster", 35, 201);
+        productList.add(product8);
+
+        Product product9 = new Product("1009", "Toaster", "2 slice toaster, stainless steel", "ToastTime", 60, 35);
+        productList.add(product9);
+
+        Product product10 = new Product("1010", "Blender", "High powered blender", "SmoothieKing", 40, 100);
+        productList.add(product10);
+    }
+
+    
+
+    
+
+    
+}
+
+//SOURCES
+//https://www.youtube.com/watch?v=H62Jfv1DJlU
+//https://www.youtube.com/watch?v=QvHBHuuddYk
+//https://www.youtube.com/watch?v=HvPlEJ3LHgE&list=WL&index=3
+//https://www.youtube.com/watch?v=Qb_NUn0TSAU&list=WL&index=1
+//https://www.youtube.com/watch?v=jhDUxynEQRI&list=WL&index=2 
