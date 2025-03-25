@@ -19,6 +19,7 @@ public class ControllerClass
     public ArrayList<Product> productList;
     public ArrayList<Account> accountList;
     public ArrayList<Product> shoppingCart;
+    Random random = new Random();
 
     //constructor
     public ControllerClass()
@@ -26,6 +27,8 @@ public class ControllerClass
         contractList = new ArrayList<Contract>();
         productList = new ArrayList<Product>();
         accountList = new ArrayList<Account>();
+        
+        createTestProducts();
     }
 
     public void adminView() {
@@ -34,35 +37,35 @@ public class ControllerClass
         Scanner userInput = new Scanner(System.in); 
 
         while (exitTheMatrix == false) {
-            System.out.print("Please, select what you want to do: \n\n1. Create test products \n2. Add new product \n3. Change product details \n4. Delete product \n5. Show catalogue \n6. Show stock report \n7. Exit. \n\nYou choice:");
-
+        System.out.print("\nPlease, select what you want to do: \n\n1. Add new product \n2. Change product details \n3. Delete product \n4. Show catalogue \n5. Show stock report \n6. View product details \n7. Exit. \n\nYou choice:");
+ 
             switch (userInput.nextInt()) {
-                case 1:
-                    createTestProducts();
-                    break;
-                case 2:
-                    addProduct();
-                    break;
-                case 3:
-                    changeProductDetails();
-                    break;
-                case 4:
-                    deleteProduct();
-                    break;
-                case 5:
-                    showCatalogue();
-                    break;
-                case 6:
-                    showStockReport();
-                    break;
-                case 7:
-                    exitTheMatrix = true;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please enter a number between 1 and 7.");
-                    break;
-            }
+            case 1:
+            addProduct();
+            break;
+            case 2:
+            changeProductDetails();
+            break;
+            case 3:
+            deleteProduct();
+            break;
+            case 4:
+            showCatalogue();
+            break;
+            case 5:
+            showStockReport();
+            break;
+            case 6:
+            viewProductDetails();
+            break;
+            case 7:
+            exitTheMatrix = true;
+            break;
+            default:
+            System.out.println("Invalid choice. Please enter a number between 1 and 7.");
+            break;
         }
+    }
     }
 
     public void customerView() {
@@ -161,48 +164,58 @@ public class ControllerClass
     public void addProduct() {
         Scanner userInput = new Scanner(System.in); 
         System.out.print("\fPlease, insert details for the new product\n\n");
-        System.out.print("product ID: "); String productID = userInput.nextLine();
+        String productID = Integer.toString(1000 + random.nextInt(9999 - 1000));
         System.out.print("product Name: "); String productName = userInput.nextLine();
         System.out.print("Product Description: "); String productDescription = userInput.nextLine();
         System.out.print("Product Supplier: "); String productSupplier = userInput.nextLine();
         System.out.print("Product Stock: "); int productStock = userInput.nextInt(); userInput.nextLine(); 
         System.out.print("Product Base Price: "); double productBasePrice = userInput.nextDouble(); userInput.nextLine();
 
+        for (Product productObject : productList) {
+            if (productObject.getProductName().equals(productName)) {
+                System.out.print("Sorry, this product already exsits!");
+                return;
+            }
+        }
+        
         Product productObject = new Product (productID, productName, productDescription, productSupplier, productStock, productBasePrice);
         productList.add(productObject);
+        
+        //random.nextInt();
+        //Random random = new Random();
     }
 
     //WORKS
     public void createTestProducts() {
 
-        Product product1 = new Product("101", "Refrigerator", "Large, stainless steel fridge", "CoolTech", 25, 800);
+        Product product1 = new Product("1001", "Refrigerator", "Large, stainless steel fridge", "CoolTech", 25, 800);
         productList.add(product1);
 
-        Product product2 = new Product("102", "Washing Machine", "High-efficiency washer", "CleanCorp", 30, 601);
+        Product product2 = new Product("1002", "Washing Machine", "High-efficiency washer", "CleanCorp", 30, 601);
         productList.add(product2);
 
-        Product product3 = new Product("103", "Dishwasher", "Quiet, energy-saving dishwasher", "ShinyClean", 15, 451);
+        Product product3 = new Product("1003", "Dishwasher", "Quiet, energy-saving dishwasher", "ShinyClean", 15, 451);
         productList.add(product3);
 
-        Product product4 = new Product("104", "Microwave Oven", "Countertop microwave with sensor cooking", "QuickHeat", 50, 150);
+        Product product4 = new Product("1004", "Microwave Oven", "Countertop microwave with sensor cooking", "QuickHeat", 50, 150);
         productList.add(product4);
 
-        Product product5 = new Product("105", "Sofa", "Comfortable three-seater sofa", "CozyLiving", 10, 900);
+        Product product5 = new Product("1005", "Sofa", "Comfortable three-seater sofa", "CozyLiving", 10, 900);
         productList.add(product5);
 
-        Product product6 = new Product("106", "Dining Table", "Solid wood dining table for six", "WoodCraft", 8, 701);
+        Product product6 = new Product("1006", "Dining Table", "Solid wood dining table for six", "WoodCraft", 8, 701);
         productList.add(product6);
 
-        Product product7 = new Product("107", "Bed Frame", "Queen-size platform bed frame", "SleepWell", 20, 550);
+        Product product7 = new Product("1007", "Bed Frame", "Queen-size platform bed frame", "SleepWell", 20, 550);
         productList.add(product7);
 
-        Product product8 = new Product("108", "Bookshelf", "Tall, wooden bookshelf with adjustable shelves", "ShelfMaster", 35, 201);
+        Product product8 = new Product("1008", "Bookshelf", "Tall, wooden bookshelf with adjustable shelves", "ShelfMaster", 35, 201);
         productList.add(product8);
 
-        Product product9 = new Product("109", "Toaster", "2 slice toaster, stainless steel", "ToastTime", 60, 35);
+        Product product9 = new Product("1009", "Toaster", "2 slice toaster, stainless steel", "ToastTime", 60, 35);
         productList.add(product9);
 
-        Product product10 = new Product("110", "Blender", "High powered blender", "SmoothieKing", 40, 100);
+        Product product10 = new Product("1010", "Blender", "High powered blender", "SmoothieKing", 40, 100);
         productList.add(product10);
     }
 
@@ -232,12 +245,19 @@ public class ControllerClass
         }
     }
 
+    public void viewProductDetails() {
+        Scanner userInput = new Scanner(System.in);
+        System.out.print("Please, select the product where you want to view details (type product ID): ");
+        int targetIndex = getProductIndex(userInput.nextLine());
+        System.out.print(productList.get(targetIndex).toString());
+    }
+    
     //WORKS. NEED TO VALIDATE FOR EXISTING PRODUCT.
     public void changeProductDetails() {
         Scanner userInput = new Scanner(System.in); 
         int selectedOption;
 
-        System.out.println("Please, select the product where you want to change details: ");
+        System.out.print("Please, select the product where you want to change details (type product ID): ");
         int targetIndex = getProductIndex(userInput.nextLine());
 
         System.out.printf("\nPlease, select the field you want to change (indicate the number): \n\n 1. Product ID: %s \n 2. Product name: %s \n 3. Product description: %s \n 4. Product supplier: %s \n 5. Product Stock: %d \n 6. Product Price: %.2f€ \n\n Your choice:", 
@@ -341,8 +361,7 @@ public class ControllerClass
                 System.out.print("Enter total payment periods: ");
                 int totalPaymentPeriods = userInput.nextInt();
 
-                newContract = new RentToOwn(contractID, shoppingCart, accountList.get(sessionIndex), 
-                    monthlyPayment, totalPaymentPeriods);
+                newContract = new RentToOwn(contractID, shoppingCart, accountList.get(sessionIndex));
                 break;
 
             default:
