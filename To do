@@ -1,6 +1,6 @@
 Noah
 -Close input scanners everywhere
--create id automatically
+-turn array of objects into string
 
 -Date field in contract
 -accountID and Account object. Storing objects or just IDs.
