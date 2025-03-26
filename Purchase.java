@@ -11,8 +11,8 @@ public class Purchase extends Contract
 {
     private int warrantyLengthMonths;
     
-    public Purchase(String contractID, ArrayList<Product> productSelection, Account linkedAccount, int warrantyLengthMonths) {
-        super(contractID, productSelection, linkedAccount);
+    public Purchase(String contractID, ArrayList<String> productSelection, String linkedAccount, double totalCartCost, String productDetails) {
+        super(contractID, productSelection, linkedAccount, totalCartCost, productDetails);
         this.warrantyLengthMonths = warrantyLengthMonths;
     }
     
