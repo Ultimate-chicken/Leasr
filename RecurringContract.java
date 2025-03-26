@@ -9,21 +9,21 @@ import java.util.ArrayList;
 
 public abstract class RecurringContract extends Contract {
     protected double monthlyPayment;
-    protected int totalPaymentPeriods;
+    protected int contractLengthMonths;
     protected double depositAmount;
     
-    public RecurringContract(String contractID, ArrayList<Product> productSelection, Account linkedAccount, int rentTermMonths) {
-        super(contractID, productSelection, linkedAccount);
+    public RecurringContract(String contractID, ArrayList<String> productSelection, String linkedAccount, double totalCartCost, String productDetails, int contractLengtMonths) {
+        super(contractID, productSelection, linkedAccount, totalCartCost, productDetails);
         
-        this.totalPaymentPeriods = rentTermMonths;
+        this.contractLengthMonths = contractLengthMonths;
     }
     
     public double getRemainingAmount(int monthsPaid) {
-        if (monthsPaid < 0 || monthsPaid > totalPaymentPeriods) {
+        if (monthsPaid < 0 || monthsPaid > contractLengthMonths) {
             throw new IllegalArgumentException("Invalid number of months paid");
         }
         
-        double remainingPayments = totalPaymentPeriods - monthsPaid;
+        double remainingPayments = contractLengthMonths - monthsPaid;
         return remainingPayments * monthlyPayment;
     }
     
@@ -32,7 +32,7 @@ public abstract class RecurringContract extends Contract {
     }
     
     public int getTotalPaymentPeriods() {
-        return totalPaymentPeriods;
+        return contractLengthMonths;
     }
     
     public double getDepositAmount() {
