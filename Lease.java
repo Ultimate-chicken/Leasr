@@ -7,16 +7,15 @@ import java.util.ArrayList;
  * @version (a version number or a date)
  */
 public class Lease extends RecurringContract {
-    public Lease(String contractID, ArrayList<Product> productSelection, Account linkedAccount, 
-    int leaseDuration) {
-        super(contractID, productSelection, linkedAccount, leaseDuration);
+    public Lease(String contractID, ArrayList<String> productSelection, String linkedAccount, double totalCartCost, String productDetails, double monthlyPayment, int totalPaymentPeriods, double depositAmount) {
+        super(contractID, productSelection, linkedAccount, totalCartCost, productDetails, totalPaymentPeriods);
 
         double basePrice = getTotalCost();
         this.monthlyPayment = basePrice * 0.7;
 
         this.depositAmount = this.monthlyPayment * 0.1;
 
-        this.monthlyPayment = ((this.monthlyPayment - this.depositAmount) / leaseDuration);
+        this.monthlyPayment = ((this.monthlyPayment - this.depositAmount) / totalPaymentPeriods);
     }
 
     /*@Override
@@ -31,4 +30,3 @@ public class Lease extends RecurringContract {
         return "Lease";
     }
 }
-
