@@ -9,8 +9,8 @@ import java.util.ArrayList;
 
 public class RentToOwn extends RecurringContract {
 
-    public RentToOwn(String contractID, ArrayList<Product> productSelection, Account linkedAccount, int totalPaymentPeriods) {
-        super(contractID, productSelection, linkedAccount, totalPaymentPeriods);
+    public RentToOwn(String contractID, ArrayList<String> productSelection, String linkedAccount, double totalCartCost, String productDetails, double monthlyPayment, int totalPaymentPeriods, double depositAmount) {
+        super(contractID, productSelection, linkedAccount, totalCartCost, productDetails, totalPaymentPeriods);
 
         double basePrice = getTotalCost();
         this.monthlyPayment = basePrice;
