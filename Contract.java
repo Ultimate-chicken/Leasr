@@ -22,23 +22,20 @@ import java.util.Date;
  */
 public abstract class Contract {
     private String contractID;
-    protected ArrayList<Product> productSelection;
-    private Account linkedAccount;
+    protected ArrayList<String> productSelection;
+    private String linkedAccount;
     private double totalCost;
-    private boolean isActive;
+    private String productDetails;
     private Date contractDate;
+    private boolean isActive;
 
-    public Contract(String contractID, ArrayList<Product> productSelection, Account linkedAccount) {
+    public Contract(String contractID, ArrayList<String> productSelection, String linkedAccount, double totalCost, String productDetails) {
         this.contractID = contractID;
         this.productSelection = productSelection;
         this.linkedAccount = linkedAccount;
+        this.totalCost = totalCost;
+        this.productDetails = productDetails;
         this.contractDate = new Date();
-
-        // calculating total cost
-        this.totalCost = 0;
-        for (Product product : productSelection) {
-            this.totalCost += product.getProductBasePrice();
-        }
         this.isActive = true;
     }
 
@@ -55,12 +52,12 @@ public abstract class Contract {
         return isActive; 
     }
 
-    public String getAccountID() { 
-        return linkedAccount.getAccountID(); 
+    public String getLinkedAccount() { 
+        return linkedAccount; 
     }
-
-    public Account getLinkedAccount() { 
-        return linkedAccount;
+    
+    public ArrayList<String> getProductSelection() {
+        return productSelection;
     }
 
     public Date getContractDate() {
@@ -74,16 +71,10 @@ public abstract class Contract {
         contractDetails.append("\n===== Contract Details =====\n");
         contractDetails.append(String.format("Contract ID: %s\n", contractID));
         contractDetails.append(String.format("Contract Type: %s\n", getContractType()));
-        contractDetails.append(String.format("Account Holder: %s\n", linkedAccount.getFullName()));
         contractDetails.append(String.format("Contract Date: %s\n", contractDate));
         
-        contractDetails.append("\nProduct(s) in Contract:\n");
-        for (Product product : productSelection) {
-            contractDetails.append(String.format("- %s (ID: %s, Price: %.2f€)\n", 
-                product.getProductName(), product.getProductID(), product.getProductBasePrice()));
-        }
+        contractDetails.append(String.format("\nProduct(s) in Contract:\n %s", productDetails));
         
-        contractDetails.append(String.format("\nTotal Contract Value: %.2f€\n", totalCost));
         contractDetails.append(String.format("\nTotal Contract Value: %.2f€\n", totalCost));
         contractDetails.append(String.format("Contract Status: %s\n", isActive ? "Active" : "Inactive"));
         
