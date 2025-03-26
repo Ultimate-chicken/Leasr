@@ -42,13 +42,14 @@ public class Product
     //WORKS
     @Override
     public String toString() {
-        return "\nID: " + this.getProductID() + 
-           " Name: " + this.getProductName() +
-           " Description: " + this.getProductDescription() +
-           " Supplier: " + this.getProductSupplier() + 
-           " Stock: " + this.getProductStock() + 
-           " Base Price: " + String.format("%.2f€", this.getProductBasePrice()) +
-           " Status: " + this.getProductStatus();
+        return "Product Details:\n" +
+           "ID: " + this.getProductID() + "\n" +
+           "Name: " + this.getProductName() + "\n" +
+           "Description: " + this.getProductDescription() + "\n" +
+           "Supplier: " + this.getProductSupplier() + "\n" +
+           "Stock: " + this.getProductStock() + "\n" +
+           "Base Price: " + String.format("%.2f€", this.getProductBasePrice()) + "\n" +
+           "Status: " + this.getProductStatus();
 }
     
     //getters

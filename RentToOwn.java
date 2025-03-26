@@ -7,21 +7,18 @@ import java.util.ArrayList;
  * @version (a version number or a date)
  */
 
-public class RentToOwn extends Contract {
-    private double monthlyPayment;
-    private int totalPaymentPeriods;
+public class RentToOwn extends RecurringContract {
 
-    public RentToOwn(String contractID, ArrayList<Product> productSelection, Account linkedAccount, 
-                     double monthlyPayment, int totalPaymentPeriods) {
-        super(contractID, productSelection, linkedAccount);
-        this.monthlyPayment = monthlyPayment;
-        this.totalPaymentPeriods = totalPaymentPeriods;
+    public RentToOwn(String contractID, ArrayList<Product> productSelection, Account linkedAccount, int totalPaymentPeriods) {
+        super(contractID, productSelection, linkedAccount, totalPaymentPeriods);
     }
-
-    @Override
+    
+    /*@Override
     public String toString() {
         return "Rent-to-Own " + super.toString() +
-               "\nMonthly Payment: " + monthlyPayment + "€" +
-               "\nTotal Payment Periods: " + totalPaymentPeriods + " months";
-    }
+               "\nMonthly Payment: " + String.format("%.2f", monthlyPayment) + "€" +
+               "\nTotal Payment Periods: " + totalPaymentPeriods + " months" +
+               "\nDeposit Amount: " + String.format("%.2f", depositAmount) + "€";
+    }*/
+
 }

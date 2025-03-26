@@ -10,8 +10,7 @@ import java.util.*;
 public class CustomerView
 {
     //TODO:
-    // - handle \f during first message output (create it as a separate method or something
-    // - handle controller referencing mechanism
+    // - handle controller referencing mechanism LATER
     // - create deposit calculation mechanism
     // - add validation to user input
     // - change messages to more user-friendly tone + add info like calculation etc
@@ -21,7 +20,14 @@ public class CustomerView
     // - add feature adding multiple products into the busket before logging in
     // - add feature to return to the log in screen if something went bad
     // - check if after leasing the item it actually is taken from the stock
-    
+    // - after product was not found message add line for design purposes
+    // - add unified view for both admin and user
+    // - add separate line so its easier to see different products
+    // - after login or create add \n (both when asking after product and in general)
+    // - all contracts should show calculated monthly price with added details such as interest rate etc, no user input, only if user agrees to terms
+    // - user is asked firstly for how long he wants the item and then price is calculated
+    // - create the check if user is already logged in, if he is then create a different view for logged in user
+
     private ControllerClass controller;
     private Scanner userInput = new Scanner(System.in);
     private ArrayList<Account> accountList;
@@ -35,6 +41,8 @@ public class CustomerView
         this.contractList = new ArrayList<>();
         this.shoppingCart = new ArrayList<>();
     }
+
+    /***** VIEWS *****/
 
     public void customerView() {
         boolean exitTheMatrix = false;
@@ -68,17 +76,48 @@ public class CustomerView
             }
         }
     }
+    
+        private void handleAccountMenu(int sessionIndex) {
+        boolean backToMainMenu = false;
 
-    public int loginToAccount() {
+        while (!backToMainMenu) {
+            System.out.print("\nPlease, select what you want to do: \n"
+                + "1. Create a new contract \n"
+                + "2. View account details \n"
+                + "3. Exit \n\nYour choice: ");
+
+            int choice = userInput.nextInt();
+            userInput.nextLine();
+
+            switch (choice) {
+                case 1:
+                    createContract(sessionIndex);
+                    break;
+                case 2:
+                    viewAccountDetails(sessionIndex);
+                    break;
+                case 3:
+                    backToMainMenu = true;
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+                    break;
+            }
+        }
+    }
+
+    /***** METHODS *****/
+
+    private int loginToAccount() {
         System.out.print("Please, insert account ID: ");
         String userInputString = userInput.nextLine();
-        
+
         if (getAccountIndex(userInputString) > -1) {
             System.out.print("Login successful. ");
             return getAccountIndex(userInputString);
         } else {
             return -1;
-            }
+        }
     }
 
     private void handleProductSelection() {
@@ -157,9 +196,9 @@ public class CustomerView
 
         String contractID = generateUniqueContractID();
 
-        Lease leaseContract = new Lease(contractID, shoppingCart, currentAccount, monthlyLeaseCost, leaseDuration, depositAmount);
-        
-        contractList.add(leaseContract);
+        //Lease leaseContract = new Lease(contractID, shoppingCart, currentAccount, monthlyLeaseCost, leaseDuration, depositAmount);
+
+        //contractList.add(leaseContract);
         System.out.println("Lease contract created: " + contractID);
         clearShoppingCart();
     }
@@ -173,17 +212,17 @@ public class CustomerView
 
         String contractID = generateUniqueContractID();
 
-        RentToOwn rentToOwnContract = new RentToOwn(contractID, shoppingCart, currentAccount, monthlyPayment, totalPaymentPeriods);
-        contractList.add(rentToOwnContract);
+        //RentToOwn rentToOwnContract = new RentToOwn(contractID, shoppingCart, currentAccount, monthlyPayment, totalPaymentPeriods);
+        //contractList.add(rentToOwnContract);
         System.out.println("Rent-to-Own contract created: " + contractID);
         clearShoppingCart();
     }
-    
+
     private void createPurchase() {
         String contractID = generateUniqueContractID();
         Date currentDate = new Date();
         double totalCartCost = calculateTotalCartCost();
-        
+
         //Purchase purchaseContract = new Purchase(contractID, currentDate, totalCartCost, shoppingCart, 24, currentAccount.getAccountID());
         //contractList.add(purchaseContract);
         System.out.println("Purchase executed successfully!");
@@ -192,39 +231,11 @@ public class CustomerView
 
     private double calculateTotalCartCost() {
         double totalCost = 0;
+
         for (Product product : shoppingCart) {
             totalCost += product.getProductBasePrice();
         }
         return totalCost;
-    }
-
-    private void handleAccountMenu(int sessionIndex) {
-        boolean backToMainMenu = false;
-
-        while (!backToMainMenu) {
-            System.out.print("\nPlease, select what you want to do: \n"
-                + "1. Create a new contract \n"
-                + "2. View account details \n"
-                + "3. Exit \n\nYour choice: ");
-
-            int choice = userInput.nextInt();
-            userInput.nextLine();
-
-            switch (choice) {
-                case 1:
-                    createContract(sessionIndex);
-                    break;
-                case 2:
-                    viewAccountDetails(sessionIndex);
-                    break;
-                case 3:
-                    backToMainMenu = true;
-                    break;
-                default:
-                    System.out.println("Invalid choice.");
-                    break;
-            }
-        }
     }
 
     private String createAccount() {
