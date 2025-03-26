@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Date;
 import java.util.Random;
@@ -28,7 +27,6 @@ public class ControllerClass
         contractList = new ArrayList<Contract>();
         productList = new ArrayList<Product>();
         accountList = new ArrayList<Account>();
-        shoppingCart = new ArrayList<String>();
 
         createTestProducts();
     }
@@ -186,7 +184,7 @@ public class ControllerClass
         System.out.print("\f");
         
         while (loginFinished == false) {
-        System.out.print("Please, choose what you want to do: \n1. Show all products \n2. Create an account \n3. Login. \n4. Exit \n\nYour choice: ");
+        System.out.print("\nPlease, choose what you want to do: \n1. Show all products \n2. Create an account \n3. Login. \n4. Exit \n\nYour choice: ");
         int testConversion = Integer.parseInt(userInput.nextLine().trim());
         switch (testConversion) {
             case 1:
@@ -237,17 +235,25 @@ public class ControllerClass
     
     //contract termination only refers to recurring contracts
     public void terminateContract(int sessionIndex) {
+        int hasRecurringContracts = 0;
+        
         for (Contract contractObject : contractList) {
             if (contractObject.getLinkedAccount().equals(accountList.get(sessionIndex).getAccountID())) {
                 if ((contractObject instanceof Lease) || (contractObject instanceof RentToOwn)) {
                     System.out.print(contractObject.toString());
+                    hasRecurringContracts++;
                 }
             }
         }
         
+        viewAccountDetails(sessionIndex);
+        
+        if (hasRecurringContracts > 0) {
         System.out.print("\nOut of your recurring contracts, please, select the contract you want to terminate (type contract ID): ");
         contractList.remove(contractList.get(getContractIndex(userInput.nextLine())));
-        
+        } else {
+            System.out.println("Sorry, you don't have any present recurring contract to terminate. Try again later. ");   
+        }
     }
     
     public int loginToAccount() {
@@ -266,7 +272,8 @@ public class ControllerClass
         String accountID = Integer.toString(1000 + random.nextInt(9999 - 1000));
         System.out.print("Please, insert full name: "); String fullName = userInput.nextLine();
         System.out.print("Please, insert user email: "); String userEmail = userInput.nextLine();
-        accountList.add(new Account(accountID, fullName, userEmail));
+        System.out.print("Please, insert user phone: "); String userPhone = userInput.nextLine();
+        accountList.add(new Account(accountID, fullName, userEmail, userPhone));
         System.out.print("Account creation successfull!");
         System.out.print(accountList.get(getAccountIndex(accountID)));
 
@@ -281,17 +288,22 @@ public class ControllerClass
         for (Contract contractObject : contractList) {
             if (contractObject.getLinkedAccount().equals(accountList.get(sessionIndex).getAccountID())) {
                 System.out.print(contractObject.toString());
+                for (String productSelected : contractObject.getProductSelection()) {
+                    System.out.print(productList.get(getProductIndex(productSelected)).toString());
+                    }
             }
         }
     } 
     
     public void createContract(int sessionIndex) {
         Random random = new Random();
-
+        shoppingCart = new ArrayList<String>();
+        
         showCatalogue();
         System.out.print("\n\nPlease, select the products you want (Write product IDs, separated by commas. E.g 1009,1010): ");
         String[] shoppingCartReferences = userInput.nextLine().split(",");
 
+        
         double totalCartCost = 0;
         String productDetails = "";
         
@@ -300,7 +312,7 @@ public class ControllerClass
             totalCartCost += productList.get(getProductIndex(reference)).getProductBasePrice();
             productDetails += reference.toString();
         }
-
+        
         // Generate unique contract ID
         String contractID = Integer.toString(1000 + random.nextInt(9999 - 1000));
         Date currentDate = new Date(System.currentTimeMillis());
@@ -311,14 +323,14 @@ public class ControllerClass
         int userSelection = Integer.parseInt(userInput.nextLine().trim());
         switch (userSelection) {
             case 1:
-                createLease(contractID, currentDate, totalCartCost, productDetails, linkedAccount);
+                createLease(contractID, currentDate, totalCartCost, shoppingCart, linkedAccount);
                 break;
             case 2:
                 System.out.println("You chose Rent-to-Own.");
                 // Add your code here to create a Rent-to-Own contract
                 break;
             case 3:
-                createPurchase(contractID, currentDate, totalCartCost, productDetails, linkedAccount);
+                createPurchase(contractID, currentDate, totalCartCost, shoppingCart, linkedAccount);
                 break;
             default:
                 System.out.println("Invalid choice. Please choose 1, 2, or 3.");
@@ -374,21 +386,27 @@ public class ControllerClass
         System.out.println(newContract); */
     }
 
-    public void createPurchase(String contractID, Date currentDate, double totalCartCost, String productDetails, String linkedAccount) {
-        contractList.add(new Purchase(contractID, currentDate, totalCartCost, shoppingCart, 24, linkedAccount));
-        System.out.print("Purchase executed successfully!");
+    public void createPurchase(String contractID, Date currentDate,  double totalCartCost, ArrayList<String> shoppingCart, String linkedAccount) {
+        ArrayList<String> shoppingCartConfirmation = new ArrayList<>(shoppingCart);
+        
+        contractList.add(new Purchase(contractID, currentDate, totalCartCost, shoppingCartConfirmation, 24, linkedAccount));
+        System.out.print("\nPurchase executed successfully!");
+        
         /* foreach contract, check if subtype purchase, cast contract to purchase, and use getter
         for(Contract contract : contractList) {
             System.out.print(contract.toString());
         } This is for show all leases. */
     }
     
-    public void createLease(String contractID, Date currentDate, double totalCartCost, String productDetails, String linkedAccount) {
+    public void createLease(String contractID, Date currentDate, double totalCartCost, ArrayList<String> shoppingCart, String linkedAccount) {
+        ArrayList<String> shoppingCartConfirmation = new ArrayList<>(shoppingCart);
+        
         System.out.print("Please, indicate how long you would like to lease these products (in months): "); 
         
         int contractLength =  Integer.parseInt(userInput.nextLine().trim());
         
-        contractList.add(new Lease(contractID, currentDate, totalCartCost, shoppingCart, 33.00, 24.00, "1234", contractLength));
+        
+        contractList.add(new Lease(contractID, currentDate, totalCartCost, shoppingCartConfirmation, 33.00, 24.00, "1234", contractLength));
         System.out.print("Purchase executed successfully!");
     }
     
@@ -469,11 +487,6 @@ public class ControllerClass
         Product product10 = new Product("1010", "Blender", "High powered blender", "SmoothieKing", 40, 100);
         productList.add(product10);
     }
-
-    
-
-    
-
     
 }
 
