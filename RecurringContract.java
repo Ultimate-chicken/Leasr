@@ -8,19 +8,12 @@ import java.util.ArrayList;
  */
 
 public abstract class RecurringContract extends Contract {
-    private double monthlyPayment;
-    private int totalPaymentPeriods;
-    private double depositAmount;
+    protected double monthlyPayment;
+    protected int totalPaymentPeriods;
+    protected double depositAmount;
     
     public RecurringContract(String contractID, ArrayList<Product> productSelection, Account linkedAccount, int rentTermMonths) {
         super(contractID, productSelection, linkedAccount);
-        
-        double basePrice = getTotalCost();
-        this.monthlyPayment = basePrice * 0.3;
-        
-        this.depositAmount = this.monthlyPayment * 0.2;
-        
-        this.monthlyPayment -= (this.depositAmount / rentTermMonths);
         
         this.totalPaymentPeriods = rentTermMonths;
     }

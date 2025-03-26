@@ -69,8 +69,33 @@ public abstract class Contract {
 
     @Override
     public String toString() {
-        return "\nContract ID: " + getContractID() +
-        "\nTotal Cost: " + getTotalCost() + "€" +
-        "\nContract Date: " + contractDate;
+        StringBuilder contractDetails = new StringBuilder();
+        
+        contractDetails.append("\n===== Contract Details =====\n");
+        contractDetails.append(String.format("Contract ID: %s\n", contractID));
+        contractDetails.append(String.format("Contract Type: %s\n", getContractType()));
+        contractDetails.append(String.format("Account Holder: %s\n", linkedAccount.getFullName()));
+        contractDetails.append(String.format("Contract Date: %s\n", contractDate));
+        
+        contractDetails.append("\nProduct(s) in Contract:\n");
+        for (Product product : productSelection) {
+            contractDetails.append(String.format("- %s (ID: %s, Price: %.2f€)\n", 
+                product.getProductName(), product.getProductID(), product.getProductBasePrice()));
+        }
+        
+        contractDetails.append(String.format("\nTotal Contract Value: %.2f€\n", totalCost));
+        contractDetails.append(String.format("\nTotal Contract Value: %.2f€\n", totalCost));
+        contractDetails.append(String.format("Contract Status: %s\n", isActive ? "Active" : "Inactive"));
+        
+        
+        contractDetails.append("==============================");
+        
+        return contractDetails.toString();
     }
+
+    // Helper method to get contract type (to be overridden by subclasses)
+    protected String getContractType() {
+        return "Base Contract";
+    }
+    
 }

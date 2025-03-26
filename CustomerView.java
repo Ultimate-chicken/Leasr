@@ -48,7 +48,7 @@ public class CustomerView
         boolean exitTheMatrix = false;
 
         while (!exitTheMatrix) {
-            System.out.print("Please, choose what you want to do: \n"
+            System.out.print("\nPlease, choose what you want to do: \n"
                 + "1. Show all products \n"
                 + "2. Create an account \n"
                 + "3. Login \n"
@@ -76,8 +76,8 @@ public class CustomerView
             }
         }
     }
-    
-        private void handleAccountMenu(int sessionIndex) {
+
+    private void handleAccountMenu(int sessionIndex) {
         boolean backToMainMenu = false;
 
         while (!backToMainMenu) {
@@ -109,7 +109,7 @@ public class CustomerView
     /***** METHODS *****/
 
     private int loginToAccount() {
-        System.out.print("Please, insert account ID: ");
+        System.out.print("\nPlease, insert account ID: ");
         String userInputString = userInput.nextLine();
 
         if (getAccountIndex(userInputString) > -1) {
@@ -121,29 +121,37 @@ public class CustomerView
     }
 
     private void handleProductSelection() {
-        System.out.print("\nDo you want to select a product? (y/n): ");
+        System.out.print("\nDo you want to select product(s)? (y/n): ");
         String response = userInput.nextLine().toLowerCase();
-
         if (response.equals("y")) {
-            System.out.print("Enter product ID: ");
-            String productID = userInput.nextLine();
+            System.out.print("Enter product ID(s) separated by commas: ");
+            String productIDs = userInput.nextLine();
+            String[] productIDArray = productIDs.split(",");
 
-            int productIndex = controller.getProductIndex(productID);
-            if (productIndex != -1) {
-                Product selectedProduct = controller.productList.get(productIndex);
-                shoppingCart.add(selectedProduct);
-                System.out.println("Product added to cart.");
+            int productsAdded = 0;
+            for (String productID : productIDArray) {
+                int productIndex = controller.getProductIndex(productID.trim());
+                if (productIndex != -1) {
+                    Product selectedProduct = controller.productList.get(productIndex);
+                    shoppingCart.add(selectedProduct);
+                    productsAdded++;
+                } else {
+                    System.out.println("Product with ID '" + productID.trim() + "' not found.");
+                }
+            }
 
+            if (productsAdded > 0) {
+                System.out.println("Product(s) added to cart.");
                 processShoppingCart();
             } else {
-                System.out.println("Product not found.");
+                System.out.println("No valid products were added to the cart.");
             }
         }
     }
 
     private void processShoppingCart() {
         if (currentAccount == null) {
-            System.out.println("You must log in or create an account to proceed.");
+            System.out.println("\nYou must log in or create an account to proceed.");
             System.out.print("Do you want to log in or create an account? (login/create): ");
             String action = userInput.nextLine().toLowerCase();
 
@@ -185,48 +193,75 @@ public class CustomerView
     }
 
     private void createLeaseContract() {
-        System.out.print("Enter monthly lease cost: ");
-        double monthlyLeaseCost = userInput.nextDouble();
-
         System.out.print("Enter lease duration (months): ");
         int leaseDuration = userInput.nextInt();
-
-        System.out.print("Enter deposit amount: ");
-        double depositAmount = userInput.nextDouble();
+        userInput.nextLine();
 
         String contractID = generateUniqueContractID();
+        Lease leaseContract = new Lease(contractID, shoppingCart, currentAccount, leaseDuration);
 
-        //Lease leaseContract = new Lease(contractID, shoppingCart, currentAccount, monthlyLeaseCost, leaseDuration, depositAmount);
+        System.out.printf("Deposit Amount: €%.2f\n", leaseContract.getDepositAmount());
+        System.out.printf("Monthly Payment: €%.2f\n", leaseContract.getMonthlyPayment());
 
-        //contractList.add(leaseContract);
-        System.out.println("Lease contract created: " + contractID);
-        clearShoppingCart();
+        System.out.print("Do you accept these terms? (y/n): ");
+        String acceptance = userInput.nextLine().toLowerCase();
+
+        if (acceptance.equals("y")) {
+            contractList.add(leaseContract);
+            System.out.println(leaseContract.toString());
+            clearShoppingCart();
+        } else {
+            System.out.println("Contract creation cancelled. Returning to main menu.");
+            clearShoppingCart();
+            return;
+        }
     }
 
     private void createRentToOwnContract() {
-        System.out.print("Enter monthly payment: ");
-        double monthlyPayment = userInput.nextDouble();
-
-        System.out.print("Enter total payment periods: ");
+        System.out.print("Enter rent term (months): ");
         int totalPaymentPeriods = userInput.nextInt();
+        userInput.nextLine();
 
         String contractID = generateUniqueContractID();
+        RentToOwn rentToOwnContract = new RentToOwn(contractID, shoppingCart, currentAccount, totalPaymentPeriods);
 
-        //RentToOwn rentToOwnContract = new RentToOwn(contractID, shoppingCart, currentAccount, monthlyPayment, totalPaymentPeriods);
-        //contractList.add(rentToOwnContract);
-        System.out.println("Rent-to-Own contract created: " + contractID);
-        clearShoppingCart();
+        System.out.printf("Deposit Amount: €%.2f\n", rentToOwnContract.getDepositAmount());
+        System.out.printf("Monthly Payment: €%.2f\n", rentToOwnContract.getMonthlyPayment());
+
+        System.out.print("Do you accept these terms? (y/n): ");
+        String acceptance = userInput.nextLine().toLowerCase();
+
+        if (acceptance.equals("y")) {
+            contractList.add(rentToOwnContract);
+            System.out.println(rentToOwnContract.toString());
+            clearShoppingCart();
+        } else {
+            System.out.println("Contract creation cancelled. Returning to main menu.");
+            clearShoppingCart();
+            return;
+        }
     }
 
     private void createPurchase() {
         String contractID = generateUniqueContractID();
-        Date currentDate = new Date();
-        double totalCartCost = calculateTotalCartCost();
 
-        //Purchase purchaseContract = new Purchase(contractID, currentDate, totalCartCost, shoppingCart, 24, currentAccount.getAccountID());
-        //contractList.add(purchaseContract);
-        System.out.println("Purchase executed successfully!");
-        clearShoppingCart();
+        Purchase purchaseContract = new Purchase(contractID, shoppingCart, currentAccount, 24);
+
+        System.out.printf("\nTotal Purchase Cost: €%.2f\n", purchaseContract.getTotalCost());
+        System.out.printf("Warranty Length: %d months\n", purchaseContract.getWarrantyLengthMonths());
+
+        System.out.print("Do you accept these terms? (y/n): ");
+        String acceptance = userInput.nextLine().toLowerCase();
+
+        if (acceptance.equals("y")) {
+            contractList.add(purchaseContract);
+            System.out.println(purchaseContract.toString());
+            clearShoppingCart();
+        } else {
+            System.out.println("Purchase cancelled. Returning to main menu.");
+            clearShoppingCart();
+            return;
+        }
     }
 
     private double calculateTotalCartCost() {

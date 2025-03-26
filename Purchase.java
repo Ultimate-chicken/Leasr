@@ -11,19 +11,18 @@ public class Purchase extends Contract
 {
     private int warrantyLengthMonths;
     
-    public Purchase(String contractID, Date purchaseDate, double totalCost, ArrayList<String> productSelection, int warrantyLengthMonths, String linkedAccount)
-    {
-        super(contractID, purchaseDate, totalCost, productSelection, linkedAccount);
+    public Purchase(String contractID, ArrayList<Product> productSelection, Account linkedAccount, int warrantyLengthMonths) {
+        super(contractID, productSelection, linkedAccount);
         this.warrantyLengthMonths = warrantyLengthMonths;
     }
     
     
     
-    @Override
+    /*@Override
     public String toString() {
         return "\nPurchase details:\n" + "Purchase ID: " + getContractID() + "\nPurchase Date: " + getCurrentDate() +
         "\nTotal cost: " + String.format("%.2f€", getTotalCost()) + "\nWarranty length (months): " + getWarrantyLengthMonths();
-    }
+    }*/
     
     //getters
     
