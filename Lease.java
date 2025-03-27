@@ -7,15 +7,25 @@ import java.util.ArrayList;
  * @version (a version number or a date)
  */
 public class Lease extends RecurringContract {
+
+    private double monthlyLeaseCost;
+    private double depositAmount;
+    private double leasePercentage;  
+    private double depositPercentage;
+
     public Lease(String contractID, ArrayList<String> productSelection, String linkedAccount, double totalCartCost, String productDetails, double monthlyPayment, int totalPaymentPeriods, double depositAmount) {
         super(contractID, productSelection, linkedAccount, totalCartCost, productDetails, totalPaymentPeriods);
+        this.leasePercentage = 0.7;
+        this.depositPercentage = 0.1;
+        
+        calculateLeaseDetails()
+    }
 
+    private void calculateLeaseDetails() {
         double basePrice = getTotalCost();
-        this.monthlyPayment = basePrice * 0.7;
-
-        this.depositAmount = this.monthlyPayment * 0.1;
-
-        this.monthlyPayment = ((this.monthlyPayment - this.depositAmount) / totalPaymentPeriods);
+        double initialMonthlyPayment = basePrice * leasePercentage;
+        this.depositAmount = initialMonthlyPayment * depositPercentage;
+        this.monthlyLeaseCost = (initialMonthlyPayment - depositAmount) / getTotalPaymentPeriods();
     }
 
     /*@Override
