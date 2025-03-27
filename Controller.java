@@ -54,7 +54,7 @@ public class Controller
                     showCatalogue();
                     break;
                 case 6:
-                    //showStockReport();
+                    showStockReport();
                     break;
                 case 7:
                     exitTheMatrix = true;
@@ -328,9 +328,7 @@ public class Controller
                 shoppingCart.add(reference);
                 productDetails += productList.get(getProductIndex(reference)).toString();
                 totalCartCost += productList.get(getProductIndex(reference)).getProductBasePrice();
-            } else {
-                System.out.printf("Product with ID '%s' was not found.", reference.trim());
-            }
+            } 
         }
 
         System.out.print("\nSelect contract type:\n1. Lease\n2. Rent-to-Own\n3. Purchase. \nYour choice: ");
@@ -453,6 +451,14 @@ public class Controller
 
         Product product10 = new Product("1010", "Blender", "High powered blender", "SmoothieKing", 40, 100);
         productList.add(product10);
+    }
+    
+    public void createTestAccounts() {
+        
+    }
+    
+    public void createTestLeases() {
+        
     }
 }
     
