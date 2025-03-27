@@ -2,31 +2,21 @@ import java.util.ArrayList;
 import java.util.Date;
 
 
-/**
- * Write a description of class AccountClass here.
- *
- * @author (your name)
- * @version (a version number or a date)
- */
+/** This class just keeps information about the account itself. It is does not store products or leases, as all of that is done within the
+ * controller class. There is a field in each (abstract) contract which is called linkedAccount which is used to link contracts with 
+ * accounts, but this class by itself only stores account details. @author (Noah, Max, Ahmada) @version (28/03/2025) */
 public class Account
 {
     private String accountID; 
     private String fullName;
     private String userEmail;
     private Date creationDate;
-    private boolean isAdmin;
-    private boolean isActive;
 
-    /**
-     * Constructor for objects of class AccountClass
-     */
     public Account(String accountID, String fullName, String userEmail, Date creationDate) {
         this.accountID = accountID;
         this.fullName = fullName;
         this.userEmail = userEmail;
         this.creationDate = creationDate;
-        this.isAdmin = isAdmin;
-        this.isActive = true;
     }
     
     @Override
@@ -34,9 +24,7 @@ public class Account
         return "Account details: \n\nAccount ID: " + getAccountID() +
                 "\nFull Name: " + getFullName() +
                 "\nEmail: " + getUserEmail() +
-                "\nCreation Date: " + getCreationDate() +
-                "\nAdmin: " + isAdmin() +
-                "\nActive: " + isActive();
+                "\nCreation Date: " + getCreationDate();
     }
     
     // Getters
@@ -55,30 +43,14 @@ public class Account
     public Date getCreationDate() {
         return creationDate;
     }
-
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
     
-    // Setters!
+    // Setters
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
-    }
-
-    public void setAdmin(boolean isAdmin) {
-        this.isAdmin = isAdmin;
-    }
-
-    public void setActive(boolean isActive) {
-        this.isActive = isActive;
     }
   
 } 
