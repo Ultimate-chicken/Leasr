@@ -1,3 +1,27 @@
+-terminateContract NOAH
+-showAllContracts NOAH
+-Javadoc for all methods and classes NOAH
+-create JUnit tests (at least 3) MAX
+-implement view class NOAH
+-calculateTotalCost abstract method MAX
+-try to implement time thingy with contracts MAX 
+-rent-to-own buy after some time, like buy outright (OPTIONALLY) MAX
+
+-add /n to the messages for design MAX
+-make abstract classes truly abstract, add abstract methods fro abstract classes NOAH
+-delete the exception thing from RecurringContract NOAH
+-add static variables to the lease and rent-to-own classes MAX
+-add interest feature to the ren-to-own MAX
+-delete admin thingy from the account details MAX
+-make every method except view private NOAH
+-implement method overloading (static polymorphism) in recurringContract cost calculation NOAH
+overlioadig/overridigng
+-create the requirements mtrix & check if everything is done and how many instances MAX
+
+
+
+
+
 Noah
 -Close input scanners everywhere
 -show all leases/all accounts on admin view
