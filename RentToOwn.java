@@ -9,15 +9,33 @@ import java.util.ArrayList;
 
 public class RentToOwn extends RecurringContract {
 
+    private static final double DEFAULT_INTEREST_RATE = 0.05;
+    private static final double DEPOSIT_PERCENTAGE = 0.2; 
+
+    private double interestRate;
+    private double depositAmount;
+    private double monthlyPayment;
+
     public RentToOwn(String contractID, ArrayList<String> productSelection, String linkedAccount, double totalCartCost, String productDetails, double monthlyPayment, int totalPaymentPeriods, double depositAmount) {
         super(contractID, productSelection, linkedAccount, totalCartCost, productDetails, totalPaymentPeriods);
-
+        this.interestRate = DEFAULT_INTEREST_RATE;
+        calculateTotalCost();
+    }
+    @Override
+    protected void calculateTotalCost() {
         double basePrice = getTotalCost();
-        this.monthlyPayment = basePrice;
 
-        this.depositAmount = this.monthlyPayment * 0.2;
+        this.depositAmount = basePrice * DEPOSIT_PERCENTAGE;
 
-        this.monthlyPayment = ((this.monthlyPayment  - this.depositAmount)/ totalPaymentPeriods);
+        double remainingBalance = basePrice - depositAmount;
+        double finalCost = remainingBalance * (1 + interestRate);
+
+        this.monthlyPayment = finalCost / getTotalPaymentPeriods();
+    }
+   
+    public void calculateTotalCost(double customInterestRate) {
+        this.interestRate = customInterestRate;
+        calculateTotalCost();
     }
 
     /*@Override

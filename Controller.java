@@ -526,5 +526,57 @@ public class Controller
         Purchase purchaseContract = new Purchase(contractID, shoppingCart, linkedAccount, totalCartCost, productDetails);
     }  */
 }
+        Account account1 = new Account("A1001", "John Doe", "john@example.com", new Date());
+        Account account2 = new Account("A1002", "Jane Roe", "jane@example.com", new Date());
+        Account account1 = new Account("A1003", "Von Doe", "von@example.com", new Date());
+        Account account2 = new Account("A1004", "Dan Roe", "dan@example.com", new Date());
+        accountList.add(account1);
+        accountList.add(account2);
+        accountList.add(account3);
+        accountList.add(account4);
+    }
     
+    public void createTestLeases() {
+        ArrayList<String> dummySelection = new ArrayList<>(); //Fake product selection
+        
+     
+        if (productList.size() >= 2) {
+            dummySelection.add(productList.get(0).getProductID());
+            dummySelection.add(productList.get(1).getProductID());
+        } else if (productList.size() == 1) {
+            dummySelection.add(productList.get(0).getProductID());
+        } else {
+            System.out.println("No products available to create test leases.");
+            return;
+        }
+        
+        // Sample product string with total cost
+        String productDetails = "";
+        double totalCartCost = 0;
+        for (String id : dummySelection) {
+            int index = getProductIndex(id);
+            if(index != -1) {
+                Product p = productList.get(index);
+                productDetails += p.toString() + "\n";
+                totalCartCost += p.getProductBasePrice();
+            }
+        }
+        
+        //get a dummy account and if none exist use the id A1000
+        String linkedAccount = accountList.size() > 0 ? accountList.get(0).getAccountID() : "A1000";
     
+       
+        String contractID1 = "L1001";
+        Lease lease1 = new Lease(contractID1, dummySelection, linkedAccount, totalCartCost, productDetails, 12, 5, 50);
+        
+        String contractID2 = "L1002";
+        Lease lease2 = new Lease(contractID2, dummySelection, linkedAccount, totalCartCost, productDetails, 24, 4, 100);
+        
+        contractList.add(lease1);
+        contractList.add(lease2);
+        
+        System.out.println("Test leases created:");
+        System.out.println(lease1.toString());
+        System.out.println(lease2.toString());
+    }    
+}
