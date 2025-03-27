@@ -13,7 +13,7 @@ public class Purchase extends Contract
     
     public Purchase(String contractID, ArrayList<String> productSelection, String linkedAccount, double totalCartCost, String productDetails) {
         super(contractID, productSelection, linkedAccount, totalCartCost, productDetails);
-        this.warrantyLengthMonths = warrantyLengthMonths;
+        this.warrantyLengthMonths = 24; //default warranty since none is set.
     }
     
     
