@@ -495,10 +495,10 @@ public class Controller
     
        
         String contractID1 = "L1001";
-        Lease lease1 = new Lease(contractID1, dummySelection, linkedAccount, totalCartCost, productDetails, 12, 0.7, 0.1);
+        Lease lease1 = new Lease(contractID1, dummySelection, linkedAccount, totalCartCost, productDetails, 12, 5, 50);
         
         String contractID2 = "L1002";
-        Lease lease2 = new Lease(contractID2, dummySelection, linkedAccount, totalCartCost, productDetails, 24, 0.8, 0.15);
+        Lease lease2 = new Lease(contractID2, dummySelection, linkedAccount, totalCartCost, productDetails, 24, 4, 100);
         
         contractList.add(lease1);
         contractList.add(lease2);
