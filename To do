@@ -1,16 +1,10 @@
 Noah
 -Close input scanners everywhere
 -show all leases/all accounts on admin view
--create rentToOwn/Lease objects
--check nextInt() is followed by nextLine()
--deposit calculation mechanism
--rent to own/lease: get total cost from super, divide by amount of months, add interest rate
+-create test leases/accounts
 
 ??
--clear shoppingCart upon contract execution
--add info like calculations in messages
+-rent to own/lease: get total cost from super, divide by amount of months, add interest rate
+-deposit calculation mechanism
 -the user should select only contract length. sumup total cost, divide, add interest. then show
-
-MAX
-- separate view from controller class
- - add validation to user input
+-create JUnit tests
