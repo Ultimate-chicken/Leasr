@@ -275,8 +275,9 @@ public class Controller
         while (!backToMainMenu) {
             System.out.print("\nPlease, select what you want to do: \n"
                 + "1. Purchase, lease, or rent-to-own products \n"
-                + "2. View account details \n"
-                + "3. Exit \n\nYour choice: ");
+                + "2. Terminate an existing contract \n"
+                + "3. View account details \n"
+                + "4. Exit \n\nYour choice: ");
 
             int userSelection = Integer.parseInt(userInput.nextLine().trim());
 
@@ -285,11 +286,13 @@ public class Controller
                     createContract(sessionIndex);
                     break;
                 case 2:
-                    viewAccountDetails(sessionIndex);
+                    terminateContract(sessionIndex);
                     break;
                 case 3:
-                    backToMainMenu = true;
+                    viewAccountDetails(sessionIndex);
                     break;
+                case 4:
+                    backToMainMenu = true;
                 default:
                     System.out.println("Invalid choice.");
                     break;
@@ -297,7 +300,47 @@ public class Controller
         }
     }
     
+    public void terminateContract(int sessionIndex) {        
+        System.out.print("\n\nYour active recurring contracts: ");
+        
+        int recurringContractCounter = 0;
+        for (Contract contractObject : contractList) {
+            if (contractObject instanceof RecurringContract) {
+                System.out.print(contractObject.toString());
+                recurringContractCounter++;
+            }
+        }
+        
+        if (recurringContractCounter > 0) { 
+            System.out.print("\n\nWhat contract would you like to terminate? Please write contractID: \nYour choice: ");
+            String userSelection = userInput.nextLine().trim();
+            Contract targetObject = contractList.get(getContractIndex(userSelection));
+            
+            if (targetObject.getLinkedAccount().equals(accountList.get(sessionIndex).getAccountID())) {
+                contractList.remove(targetObject);
+                        System.out.printf("Contract %s was succesfully terminated. ", userSelection);
+            } else {
+                System.out.printf("\nContract %s is not linked to this account. Please recheck contract ID. ", userSelection);
+            }
+        } else {
+            System.out.print("\nCurrently, you don't have any active recurring contract that can be terminated.\n\n");
+        }
+    }
+    
+    
+     public int getContractIndex(String contractID) {
+        for(int arrayIndex = 0; arrayIndex<contractList.size(); arrayIndex++) {
+            if(contractList.get(arrayIndex).getContractID().equals(contractID)) {
+                return arrayIndex;
+            }
+        }
+
+        System.out.printf("Account ID %s was not found in our database.", contractID);
+        return -1;
+    }   
+    
     public void viewAccountDetails(int sessionIndex) {
+        
         System.out.print(accountList.get(sessionIndex).toString());
         System.out.print("\n\nContracts associated to this account: ");
         
@@ -310,8 +353,9 @@ public class Controller
         }
         
         if (contractCounter < 1) {
-            System.out.print("\nNo contracts currently associated to this account. ");
+            System.out.print("\nNo recurring contracts currently associated to this account.\n ");
         }
+        
     } 
     
     public void createContract(int sessionIndex) {
@@ -326,7 +370,7 @@ public class Controller
             int productIndex = getProductIndex(reference.trim());
             if (productIndex != -1) {
                 shoppingCart.add(reference);
-                productDetails += productList.get(getProductIndex(reference)).toString();
+                productDetails += productList.get(getProductIndex(reference)).toString() + "\n";
                 totalCartCost += productList.get(getProductIndex(reference)).getProductBasePrice();
             } 
         }
@@ -454,6 +498,34 @@ public class Controller
     }
     
     public void createTestAccounts() {
+        Account newAccount = new Account("9994", "Otto Von Bismarck", "bismarck@gmail.de", new Date());
+        accountList.add(newAccount);
+        System.out.print("Account creation successful! Your account ID is 9995");
+        
+        Account newAccount2 = new Account("9995", "Marie Curie", "marie.curie@science.org", new Date());
+        accountList.add(newAccount2);
+        System.out.printf("Account creation successful! Your account ID is %s\n", "1234");
+        
+        Account newAccount3 = new Account("9996", "Alan Turing", "alan.turing@computing.net", new Date());
+        accountList.add(newAccount3);
+        System.out.printf("Account creation successful! Your account ID is %s\n", "5678");
+        
+        Account newAccount4 = new Account("9997", "Rosa Parks", "rosa.parks@civilrights.info", new Date());
+        accountList.add(newAccount4);
+        System.out.printf("Account creation successful! Your account ID is %s\n", "0001");
+        
+        Account newAccount5 = new Account("9998", "Leonardo da Vinci", "leonardo@artandscience.it", new Date());
+        accountList.add(newAccount5);
+        System.out.printf("Account creation successful! Your account ID is %s\n", "4321");
+    }
+    
+     /* public void createTestContracts() {
+        RentToOwn rentToOwnContract = new RentToOwn(contractID, shoppingCart, linkedAccount, totalCartCost, productDetails, contractLengthMonths);
+        RentToOwn rentToOwnContract = new RentToOwn("9994", null, "techFanatic", 799.99, "Premium Noise-Cancelling Headphones - Wireless, Bluetooth 5.0, 30-hour battery.", 24);
+        Lease leaseContract = new Lease(contractID, shoppingCart, linkedAccount, totalCartCost, productDetails, contractLengthMonths);
+        Purchase purchaseContract = new Purchase(contractID, shoppingCart, linkedAccount, totalCartCost, productDetails);
+    }  */
+}
         Account account1 = new Account("A1001", "John Doe", "john@example.com", new Date());
         Account account2 = new Account("A1002", "Jane Roe", "jane@example.com", new Date());
         Account account1 = new Account("A1003", "Von Doe", "von@example.com", new Date());
@@ -506,7 +578,5 @@ public class Controller
         System.out.println("Test leases created:");
         System.out.println(lease1.toString());
         System.out.println(lease2.toString());
-    }
-    
-    
+    }    
 }
