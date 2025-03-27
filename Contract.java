@@ -37,7 +37,10 @@ public abstract class Contract {
         this.productDetails = productDetails;
         this.contractDate = new Date();
         this.isActive = true;
+        calculateTotalCost();
     }
+
+    protected abstract void calculateTotalCost();
 
     //Getters
     public String getContractID() { 
@@ -55,7 +58,7 @@ public abstract class Contract {
     public String getLinkedAccount() { 
         return linkedAccount; 
     }
-    
+
     public ArrayList<String> getProductSelection() {
         return productSelection;
     }
@@ -67,20 +70,18 @@ public abstract class Contract {
     @Override
     public String toString() {
         StringBuilder contractDetails = new StringBuilder();
-        
+
         contractDetails.append("\n===== Contract Details =====\n");
         contractDetails.append(String.format("Contract ID: %s\n", contractID));
         contractDetails.append(String.format("Contract Type: %s\n", getContractType()));
         contractDetails.append(String.format("Contract Date: %s\n", contractDate));
-        
+
         contractDetails.append(String.format("\nProduct(s) in Contract:\n %s", productDetails));
-        
+
         contractDetails.append(String.format("\nTotal Contract Value: %.2f€\n", totalCost));
         contractDetails.append(String.format("Contract Status: %s\n", isActive ? "Active" : "Inactive"));
-        
-        
+
         contractDetails.append("==============================");
-        
         return contractDetails.toString();
     }
 
@@ -88,5 +89,5 @@ public abstract class Contract {
     protected String getContractType() {
         return "Base Contract";
     }
-    
+
 }

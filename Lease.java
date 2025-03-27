@@ -8,6 +8,9 @@ import java.util.ArrayList;
  */
 public class Lease extends RecurringContract {
 
+    private static final double LEASE_PERCENTAGE = 0.7;
+    private static final double LEASE_DEPOSIT_PERCENTAGE = 0.1;
+
     private double monthlyLeaseCost;
     private double depositAmount;
     private double leasePercentage;  
@@ -15,25 +18,22 @@ public class Lease extends RecurringContract {
 
     public Lease(String contractID, ArrayList<String> productSelection, String linkedAccount, double totalCartCost, String productDetails, double monthlyPayment, int totalPaymentPeriods, double depositAmount) {
         super(contractID, productSelection, linkedAccount, totalCartCost, productDetails, totalPaymentPeriods);
-        this.leasePercentage = 0.7;
-        this.depositPercentage = 0.1;
-
-        calculateLeaseDetails()
     }
 
-    private void calculateLeaseDetails() {
+    @Override
+    protected void calculateTotalCost() {
         double basePrice = getTotalCost();
-        double initialMonthlyPayment = basePrice * leasePercentage;
-        this.depositAmount = initialMonthlyPayment * depositPercentage;
+        double initialMonthlyPayment = basePrice * LEASE_PERCENTAGE;
+        this.depositAmount = initialMonthlyPayment * LEASE_DEPOSIT_PERCENTAGE;
         this.monthlyLeaseCost = (initialMonthlyPayment - depositAmount) / getTotalPaymentPeriods();
     }
 
     @Override
     public String toString() {
-    return "Lease " + super.toString() +
-    "\nMonthly Lease Cost: " + monthlyLeaseCost + "€" +
-    //"\nLease Duration: " + leaseDuration + " months" +
-    "\nDeposit Amount: " + depositAmount + "€";
+        return "Lease " + super.toString() +
+        "\nMonthly Lease Cost: " + monthlyLeaseCost + "€" +
+            //"\nLease Duration: " + leaseDuration + " months" +
+        "\nDeposit Amount: " + depositAmount + "€";
     }
 
     @Override

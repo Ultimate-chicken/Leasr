@@ -21,21 +21,14 @@ public class RentToOwn extends RecurringContract {
         this.interestRate = DEFAULT_INTEREST_RATE;
         calculateTotalCost();
     }
+
     @Override
     protected void calculateTotalCost() {
         double basePrice = getTotalCost();
-
         this.depositAmount = basePrice * DEPOSIT_PERCENTAGE;
-
         double remainingBalance = basePrice - depositAmount;
-        double finalCost = remainingBalance * (1 + interestRate);
-
+        double finalCost = remainingBalance * (1 + DEFAULT_INTEREST_RATE);
         this.monthlyPayment = finalCost / getTotalPaymentPeriods();
-    }
-   
-    public void calculateTotalCost(double customInterestRate) {
-        this.interestRate = customInterestRate;
-        calculateTotalCost();
     }
 
     /*@Override

@@ -25,7 +25,6 @@ public class Account
         this.fullName = fullName;
         this.userEmail = userEmail;
         this.creationDate = creationDate;
-        this.isAdmin = isAdmin;
         this.isActive = true;
     }
     
@@ -35,7 +34,6 @@ public class Account
                 "\nFull Name: " + getFullName() +
                 "\nEmail: " + getUserEmail() +
                 "\nCreation Date: " + getCreationDate() +
-                "\nAdmin: " + isAdmin() +
                 "\nActive: " + isActive();
     }
     
@@ -56,10 +54,6 @@ public class Account
         return creationDate;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
     public boolean isActive() {
         return isActive;
     }
@@ -71,10 +65,6 @@ public class Account
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
-    }
-
-    public void setAdmin(boolean isAdmin) {
-        this.isAdmin = isAdmin;
     }
 
     public void setActive(boolean isActive) {

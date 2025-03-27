@@ -26,7 +26,7 @@ public class Controller
 
         createTestProducts();
     }
-    
+
     /** Admin view. Allows administrators to add/delete product, change/view product details, and show list of products/accounts/leases */
     public void adminView() {
         System.out.print("\f");
@@ -65,7 +65,7 @@ public class Controller
             }
         }
     }
-    
+
     //gets index of product within arrayList, based on product ID.
     public int getProductIndex(String productID) {
         for(int arrayIndex = 0; arrayIndex<productList.size(); arrayIndex++) {
@@ -74,10 +74,10 @@ public class Controller
             }
         }
 
-        System.out.printf("Product ID %s was not found in our database.", productID);
+        System.out.printf("\nProduct ID %s was not found in our database.", productID);
         return -1;
     }
-    
+
     public void addProduct() {
         System.out.print("\fPlease, insert details for the new product\n\n");
         String productID = Integer.toString(1000 + random.nextInt(9999 - 1000));
@@ -89,7 +89,7 @@ public class Controller
 
         for (Product productObject : productList) {
             if (productObject.getProductName().equals(productName)) {
-                System.out.print("Sorry, this product already exsits!");
+                System.out.print("\nSorry, this product already exsits!");
                 return;
             }
         }
@@ -97,17 +97,17 @@ public class Controller
         Product productObject = new Product (productID, productName, productDescription, productSupplier, productStock, productBasePrice);
         productList.add(productObject);
     }
-    
+
     public void viewProductDetails() {
-        System.out.print("Please, select the product where you want to view details (type product ID): ");
+        System.out.print("\nPlease, select the product where you want to view details (type product ID): ");
         int targetIndex = getProductIndex(userInput.nextLine());
         System.out.print(productList.get(targetIndex).toString());
     }
-    
+
     public void changeProductDetails() {
         int selectedOption;
 
-        System.out.print("Please, select the product where you want to change details (type product ID): ");
+        System.out.print("\nPlease, select the product where you want to change details (type product ID): ");
         int targetIndex = getProductIndex(userInput.nextLine());
 
         System.out.printf("\nPlease, select the field you want to change (indicate the number): \n\n 1. Product ID: %s \n 2. Product name: %s \n 3. Product description: %s \n 4. Product supplier: %s \n 5. Product Stock: %d \n 6. Product Price: %.2f€ \n\n Your choice:", 
@@ -151,12 +151,12 @@ public class Controller
 
         System.out.println("\n\nProduct details have been succesfully changed.");
     }
-    
+
     public void deleteProduct() {
         System.out.print("\nPlease, insert the productID of the product you want to eliminate: "); String productID = userInput.nextLine();
 
         if (getProductIndex(productID) != -1) {
-            System.out.printf("Are you sure you want Delete product %s? Type y for yes and n for no.\n Y/N: ", productID);
+            System.out.printf("\nAre you sure you want Delete product %s? Type y for yes and n for no.\n Y/N: ", productID);
             if (userInput.nextLine().contains("y")) {
                 productList.remove(getProductIndex(productID));
                 System.out.printf("\nProduct %s was successfully removed.", productID);
@@ -166,22 +166,22 @@ public class Controller
             }
         }
     }
-    
+
     public void showCatalogue() {
-        System.out.println("Catalogue of all products");
+        System.out.println("\nCatalogue of all products");
         for (Product productObject : productList) {
             System.out.println(productObject.toString());
             System.out.println();
         }
     }
-    
+
     public void showStockReport() {
-        System.out.println("\fCurrent stock levels for all products (Name/ID: Stock):\n");
+        System.out.println("\f\nCurrent stock levels for all products (Name/ID: Stock):\n");
         for (Product productObject : productList) {
             System.out.println(productObject.getProductName() + "/" + productObject.getProductID() + ": " + productObject.getProductStock());
         }
     }
-    
+
     /** Customer view. Allows */
     public void customerView() {
         boolean exitTheMatrix = false;
@@ -215,7 +215,7 @@ public class Controller
             }
         }
     }
-    
+
     public int getAccountIndex(String accountID) {
         for(int arrayIndex = 0; arrayIndex<accountList.size(); arrayIndex++) {
             if(accountList.get(arrayIndex).getAccountID().equals(accountID)) {
@@ -226,25 +226,25 @@ public class Controller
         System.out.printf("Sorry, account %s was not found in our database. ", accountID);
         return -1;
     }
-    
+
     private void promptLogin() {
-            System.out.println("\nIf you want to select products, you must log in or create an account. Type LOGIN or CREATE if you want to proceed.");
-            String userSelection = userInput.nextLine().toLowerCase();
-            
-            switch(userSelection) {
-                case "login":
+        System.out.println("\nIf you want to select products, you must log in or create an account. Type LOGIN or CREATE if you want to proceed.");
+        String userSelection = userInput.nextLine().toLowerCase();
+
+        switch(userSelection) {
+            case "login":
                 loginToAccount();
                 break;
-                case "create":
+            case "create":
                 createAccount();
                 break;
-                default:
+            default:
                 //if none of the two option chosen, exit. 
                 return;
-            }
+        }
     }
-    
-     private void createAccount() {
+
+    private void createAccount() {
         String accountID = Integer.toString(1000 + random.nextInt(9999 - 1000));
         System.out.print("Please, insert full name: "); 
         String fullName = userInput.nextLine();
@@ -253,18 +253,18 @@ public class Controller
 
         Account newAccount = new Account(accountID, fullName, userEmail, new Date());
         accountList.add(newAccount);
-        System.out.printf("Account creation successful! Your account ID is %s", accountID);
-        
+        System.out.printf("\nAccount creation successful! Your account ID is %s", accountID);
+
         int sessionIndex = getAccountIndex(accountID);
         handleAccountMenu(sessionIndex);
     }
-    
+
     //checks if account exists. If login is successfull, it will open the login menu. 
     private void loginToAccount() {
         System.out.print("\nPlease, insert account ID: ");
         int sessionIndex = getAccountIndex(userInput.nextLine());
         if (sessionIndex > -1) {
-            System.out.print("Login successful. ");
+            System.out.print("\nLogin successful. ");
             handleAccountMenu(sessionIndex);
         }
     }
@@ -299,10 +299,10 @@ public class Controller
             }
         }
     }
-    
+
     public void terminateContract(int sessionIndex) {        
         System.out.print("\n\nYour active recurring contracts: ");
-        
+
         int recurringContractCounter = 0;
         for (Contract contractObject : contractList) {
             if (contractObject instanceof RecurringContract) {
@@ -310,15 +310,15 @@ public class Controller
                 recurringContractCounter++;
             }
         }
-        
+
         if (recurringContractCounter > 0) { 
             System.out.print("\n\nWhat contract would you like to terminate? Please write contractID: \nYour choice: ");
             String userSelection = userInput.nextLine().trim();
             Contract targetObject = contractList.get(getContractIndex(userSelection));
-            
+
             if (targetObject.getLinkedAccount().equals(accountList.get(sessionIndex).getAccountID())) {
                 contractList.remove(targetObject);
-                        System.out.printf("Contract %s was succesfully terminated. ", userSelection);
+                System.out.printf("Contract %s was succesfully terminated. ", userSelection);
             } else {
                 System.out.printf("\nContract %s is not linked to this account. Please recheck contract ID. ", userSelection);
             }
@@ -326,9 +326,8 @@ public class Controller
             System.out.print("\nCurrently, you don't have any active recurring contract that can be terminated.\n\n");
         }
     }
-    
-    
-     public int getContractIndex(String contractID) {
+
+    public int getContractIndex(String contractID) {
         for(int arrayIndex = 0; arrayIndex<contractList.size(); arrayIndex++) {
             if(contractList.get(arrayIndex).getContractID().equals(contractID)) {
                 return arrayIndex;
@@ -338,12 +337,12 @@ public class Controller
         System.out.printf("Account ID %s was not found in our database.", contractID);
         return -1;
     }   
-    
+
     public void viewAccountDetails(int sessionIndex) {
-        
+
         System.out.print(accountList.get(sessionIndex).toString());
         System.out.print("\n\nContracts associated to this account: ");
-        
+
         int contractCounter = 0;
         for (Contract contractObject : contractList) {
             if (contractObject.getLinkedAccount().equals(accountList.get(sessionIndex).getAccountID())) {
@@ -351,13 +350,13 @@ public class Controller
                 contractCounter++;
             }
         }
-        
+
         if (contractCounter < 1) {
             System.out.print("\nNo recurring contracts currently associated to this account.\n ");
         }
-        
+
     } 
-    
+
     public void createContract(int sessionIndex) {
         shoppingCart = new ArrayList<String>();
         showCatalogue();
@@ -365,7 +364,7 @@ public class Controller
         String[] shoppingCartReferences = userInput.nextLine().split(",");
         double totalCartCost = 0;
         String productDetails = "";
-        
+
         for (String reference : shoppingCartReferences) {
             int productIndex = getProductIndex(reference.trim());
             if (productIndex != -1) {
@@ -392,14 +391,14 @@ public class Controller
                 System.out.println("Invalid contract type.");
         }
     }
-    
+
     private void createLeaseContract(int sessionIndex, double totalCartCost, String productDetails) {
-        System.out.print("Enter lease duration (months): ");
+        System.out.print("\nEnter lease duration (months): ");
         int contractLengthMonths = Integer.parseInt(userInput.nextLine().trim());
 
         String contractID = Integer.toString(1000 + random.nextInt(9999 - 1000));
         String linkedAccount = accountList.get(sessionIndex).getAccountID();
-        
+
         //contains dummy deposit and monthly payment
         Lease leaseContract = new Lease(contractID, shoppingCart, linkedAccount, totalCartCost, productDetails, 500, contractLengthMonths, 30);
 
@@ -413,13 +412,13 @@ public class Controller
             contractList.add(leaseContract);
             System.out.println(leaseContract.toString());
         } else {
-            System.out.println("Contract creation cancelled. Returning to main menu.");
+            System.out.println("\nContract creation cancelled. Returning to main menu.");
             return;
         }
     }
 
     private void createRentToOwnContract(int sessionIndex, double totalCartCost, String productDetails) {
-        System.out.print("Enter rent term (months): ");
+        System.out.print("\nEnter rent term (months): ");
         int contractLengthMonths = userInput.nextInt();
         userInput.nextLine();
 
@@ -437,7 +436,7 @@ public class Controller
             contractList.add(rentToOwnContract);
             System.out.println(rentToOwnContract.toString());
         } else {
-            System.out.println("Contract creation cancelled. Returning to main menu.");
+            System.out.println("\nContract creation cancelled. Returning to main menu.");
             return;
         }
     }
@@ -458,11 +457,11 @@ public class Controller
             contractList.add(purchaseContract);
             System.out.println(purchaseContract.toString());
         } else {
-            System.out.println("Purchase cancelled. Returning to main menu.");
+            System.out.println("\nPurchase cancelled. Returning to main menu.");
             return;
         }
     }
-    
+
     /** Test classes */
     public void createTestProducts() {
 
@@ -496,60 +495,60 @@ public class Controller
         Product product10 = new Product("1010", "Blender", "High powered blender", "SmoothieKing", 40, 100);
         productList.add(product10);
     }
-    
-    public void createTestAccounts() {
+
+    /*public void createTestAccounts() {
         Account newAccount = new Account("9994", "Otto Von Bismarck", "bismarck@gmail.de", new Date());
         accountList.add(newAccount);
         System.out.print("Account creation successful! Your account ID is 9995");
-        
+
         Account newAccount2 = new Account("9995", "Marie Curie", "marie.curie@science.org", new Date());
         accountList.add(newAccount2);
         System.out.printf("Account creation successful! Your account ID is %s\n", "1234");
-        
+
         Account newAccount3 = new Account("9996", "Alan Turing", "alan.turing@computing.net", new Date());
         accountList.add(newAccount3);
         System.out.printf("Account creation successful! Your account ID is %s\n", "5678");
-        
+
         Account newAccount4 = new Account("9997", "Rosa Parks", "rosa.parks@civilrights.info", new Date());
         accountList.add(newAccount4);
         System.out.printf("Account creation successful! Your account ID is %s\n", "0001");
-        
+
         Account newAccount5 = new Account("9998", "Leonardo da Vinci", "leonardo@artandscience.it", new Date());
         accountList.add(newAccount5);
         System.out.printf("Account creation successful! Your account ID is %s\n", "4321");
     }
-    
-     /* public void createTestContracts() {
-        RentToOwn rentToOwnContract = new RentToOwn(contractID, shoppingCart, linkedAccount, totalCartCost, productDetails, contractLengthMonths);
-        RentToOwn rentToOwnContract = new RentToOwn("9994", null, "techFanatic", 799.99, "Premium Noise-Cancelling Headphones - Wireless, Bluetooth 5.0, 30-hour battery.", 24);
-        Lease leaseContract = new Lease(contractID, shoppingCart, linkedAccount, totalCartCost, productDetails, contractLengthMonths);
-        Purchase purchaseContract = new Purchase(contractID, shoppingCart, linkedAccount, totalCartCost, productDetails);
-    }  */
-}
+
+    /* public void createTestContracts() {
+    RentToOwn rentToOwnContract = new RentToOwn(contractID, shoppingCart, linkedAccount, totalCartCost, productDetails, contractLengthMonths);
+    RentToOwn rentToOwnContract = new RentToOwn("9994", null, "techFanatic", 799.99, "Premium Noise-Cancelling Headphones - Wireless, Bluetooth 5.0, 30-hour battery.", 24);
+    Lease leaseContract = new Lease(contractID, shoppingCart, linkedAccount, totalCartCost, productDetails, contractLengthMonths);
+    Purchase purchaseContract = new Purchase(contractID, shoppingCart, linkedAccount, totalCartCost, productDetails);
+    }  
+
+    public void createTestAccounts() {
         Account account1 = new Account("A1001", "John Doe", "john@example.com", new Date());
         Account account2 = new Account("A1002", "Jane Roe", "jane@example.com", new Date());
-        Account account1 = new Account("A1003", "Von Doe", "von@example.com", new Date());
-        Account account2 = new Account("A1004", "Dan Roe", "dan@example.com", new Date());
+        Account account3 = new Account("A1003", "Von Doe", "von@example.com", new Date());
+        Account account4 = new Account("A1004", "Dan Roe", "dan@example.com", new Date());
         accountList.add(account1);
         accountList.add(account2);
         accountList.add(account3);
         accountList.add(account4);
-    }
-    
+    }*/
+
     public void createTestLeases() {
         ArrayList<String> dummySelection = new ArrayList<>(); //Fake product selection
-        
-     
+
         if (productList.size() >= 2) {
             dummySelection.add(productList.get(0).getProductID());
             dummySelection.add(productList.get(1).getProductID());
         } else if (productList.size() == 1) {
             dummySelection.add(productList.get(0).getProductID());
         } else {
-            System.out.println("No products available to create test leases.");
+            System.out.println("\nNo products available to create test leases.");
             return;
         }
-        
+
         // Sample product string with total cost
         String productDetails = "";
         double totalCartCost = 0;
@@ -561,20 +560,19 @@ public class Controller
                 totalCartCost += p.getProductBasePrice();
             }
         }
-        
+
         //get a dummy account and if none exist use the id A1000
         String linkedAccount = accountList.size() > 0 ? accountList.get(0).getAccountID() : "A1000";
-    
-       
+
         String contractID1 = "L1001";
         Lease lease1 = new Lease(contractID1, dummySelection, linkedAccount, totalCartCost, productDetails, 12, 5, 50);
-        
+
         String contractID2 = "L1002";
         Lease lease2 = new Lease(contractID2, dummySelection, linkedAccount, totalCartCost, productDetails, 24, 4, 100);
-        
+
         contractList.add(lease1);
         contractList.add(lease2);
-        
+
         System.out.println("Test leases created:");
         System.out.println(lease1.toString());
         System.out.println(lease2.toString());
