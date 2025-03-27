@@ -17,7 +17,7 @@ public class Lease extends RecurringContract {
         super(contractID, productSelection, linkedAccount, totalCartCost, productDetails, totalPaymentPeriods);
         this.leasePercentage = 0.7;
         this.depositPercentage = 0.1;
-        
+
         calculateLeaseDetails()
     }
 
@@ -28,13 +28,14 @@ public class Lease extends RecurringContract {
         this.monthlyLeaseCost = (initialMonthlyPayment - depositAmount) / getTotalPaymentPeriods();
     }
 
-    /*@Override
+    @Override
     public String toString() {
     return "Lease " + super.toString() +
     "\nMonthly Lease Cost: " + monthlyLeaseCost + "€" +
-    "\nLease Duration: " + leaseDuration + " months" +
+    //"\nLease Duration: " + leaseDuration + " months" +
     "\nDeposit Amount: " + depositAmount + "€";
-    }*/
+    }
+
     @Override
     protected String getContractType() {
         return "Lease";
