@@ -10,8 +10,8 @@ import java.util.Date;
  * test class for validating Controller functionality across different contract types; tests 3 methods within itself; 1) cost calculation for lease and rent-o-own
  * recurring contracts, 2) breakdown of contract total cost calculation, 3) contract and account linking mechanism.
  *
- * @author  (your name)
- * @version (a version number or a date)
+ * @author (Max & Noah)
+ * @version 28/03/2025
  */
 public class ControllerTest
 {
