@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * The test class ControllerTest.
+ * test class for validating Controller functionality across different contract types; tests 3 methods within itself; 1) cost calculation for lease and rent-o-own
+ * recurring contracts, 2) breakdown of contract total cost calculation, 3) contract and account linking mechanism.
  *
  * @author  (your name)
  * @version (a version number or a date)
@@ -27,9 +28,13 @@ public class ControllerTest
      * Sets up the test fixture.
      *
      * Called before every test case method.
+     * 
+     * creates a Controller instance and populates it with: test account, test product, lease contract and rent-to-own contract
      */
     @BeforeEach
     public void setUp() {
+
+        //crates the user & the lease and rent-to-oown contracts
         controller = new Controller();
 
         Account testAccount = new Account("0001", "The Chosen One", "why@gg.ua", new Date());
@@ -46,6 +51,10 @@ public class ControllerTest
         controller.contractList.add(testRentToOwnContract);
     }
 
+    /**
+     * Tests the total cost calculation for both lease and RentToOwn contracts. Ensures that: lease total cost = (monthly payment * contract months) + deposit
+     * and RentToOwn total cost = monthly payment with interest * contract months
+     */
     @Test
     public void testContractTotalCostCalculation() {
         //lease test
@@ -67,6 +76,10 @@ public class ControllerTest
         assertEquals(rentToOwnMonthlyPayment * 24, rentToOwnTotalCost, 0.01);
     }
 
+    /**
+     * Conducts a detailed breakdown of contract total cost calculations. Validates: lease contract total cost, lease monthly payment, lease deposit amount
+     * and RentToOwn contract total cost and its monthly payment with interest.
+     */
     @Test
     public void testContractTotalCostBreakdown() {
         //lease test
@@ -76,9 +89,9 @@ public class ControllerTest
         double leaseDeposit = leaseContract.getDepositAmount();
         double expectedLeaseTotalCost = (leaseMonthlyPayment * leaseTermMonths) + leaseDeposit;
 
-        assertEquals(expectedLeaseTotalCost, leaseContract.calculateTotalCost(), 0.01,"Lease total cost calculation mismatch.");
-        assertEquals(leaseMonthlyPayment, leaseContract.getAdjustedMonthlyCost(), 0.01, "Lease monthly payment is incorrect.");
-        assertEquals(leaseDeposit, leaseContract.getDepositAmount(), 0.01, "Lease deposit amount is incorrect.");
+        assertEquals(expectedLeaseTotalCost, leaseContract.calculateTotalCost(), 0.01,"Lease total cost calculation ERROR.");
+        assertEquals(leaseMonthlyPayment, leaseContract.getAdjustedMonthlyCost(), 0.01, "Lease monthly payment ERROR.");
+        assertEquals(leaseDeposit, leaseContract.getDepositAmount(), 0.01, "Lease deposit amount ERROR.");
 
         //rent-to-Own test
         RentToOwn rentToOwnContract = (RentToOwn) controller.contractList.get(1);
@@ -86,12 +99,16 @@ public class ControllerTest
         double rtoMonthlyPaymentWithInterest = rentToOwnContract.getMonthlyCostWithInterest();
         double expectedRtoTotalCost = rtoMonthlyPaymentWithInterest * rtoTermMonths;
 
-        assertEquals(expectedRtoTotalCost, rentToOwnContract.calculateTotalCost(), 0.01, "Rent-to-Own total cost calculation mismatch.");
-        assertEquals(rtoMonthlyPaymentWithInterest, rentToOwnContract.getMonthlyCostWithInterest(), 0.01, "Rent-to-Own monthly payment with interest is incorrect.");
+        assertEquals(expectedRtoTotalCost, rentToOwnContract.calculateTotalCost(), 0.01, "Rent-to-Own total cost calculation ERROR.");
+        assertEquals(rtoMonthlyPaymentWithInterest, rentToOwnContract.getMonthlyCostWithInterest(), 0.01, "Rent-to-Own monthly payment with interest ERROR.");
     }
 
+    /**
+     * Tests the contract-to-account linking mechanism. Ensures that: new contracts can be added to the contract list, contracts are correctly linked to the specific account
+     * and the number of contracts for a given account is accurate.
+     */
     @Test
-    public void testContractAccountAssociation() {
+    public void testContractAccount() {
         Account testAccount = controller.accountList.get(0);
         String accountId = testAccount.getAccountID();
 
