@@ -16,6 +16,25 @@ public class Lease extends RecurringContract {
         super(contractID, productSelection, linkedAccount, contractLengthMonths, contractDate);
         setAdjustedMonthlyCost(); setDepositAmount();
         calculateTotalCost();
+
+    private static final double LEASE_PERCENTAGE = 0.7;
+    private static final double LEASE_DEPOSIT_PERCENTAGE = 0.1;
+
+    private double monthlyLeaseCost;
+    private double depositAmount;
+    private double leasePercentage;  
+    private double depositPercentage;
+
+    public Lease(String contractID, ArrayList<String> productSelection, String linkedAccount, double totalCartCost, String productDetails, double monthlyPayment, int totalPaymentPeriods, double depositAmount) {
+        super(contractID, productSelection, linkedAccount, totalCartCost, productDetails, totalPaymentPeriods);
+    }
+
+    @Override
+    protected void calculateTotalCost() {
+        double basePrice = getTotalCost();
+        double initialMonthlyPayment = basePrice * LEASE_PERCENTAGE;
+        this.depositAmount = initialMonthlyPayment * LEASE_DEPOSIT_PERCENTAGE;
+        this.monthlyLeaseCost = (initialMonthlyPayment - depositAmount) / getTotalPaymentPeriods();
     }
 
     //As we can see, getters are used from the contract class, the recurringContract class, and the lease class. 
@@ -36,6 +55,10 @@ public class Lease extends RecurringContract {
     public double calculateTotalCost() {
         double totalCost = (getAdjustedMonthlyCost() * getContractLengthMonths()) + getDepositAmount();
         return totalCost;
+        return "Lease " + super.toString() +
+        "\nMonthly Lease Cost: " + monthlyLeaseCost + "€" +
+            //"\nLease Duration: " + leaseDuration + " months" +
+        "\nDeposit Amount: " + depositAmount + "€";
     }
 
     //getters

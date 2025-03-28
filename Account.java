@@ -17,6 +17,8 @@ public class Account
         this.fullName = fullName;
         this.userEmail = userEmail;
         this.creationDate = creationDate;
+  
+        this.isActive = true;
     }
     
     @Override
@@ -24,7 +26,10 @@ public class Account
         return "Account details: \n\nAccount ID: " + getAccountID() +
                 "\nFull Name: " + getFullName() +
                 "\nEmail: " + getUserEmail() +
+
                 "\nCreation Date: " + getCreationDate();
+                "\nCreation Date: " + getCreationDate() +
+                "\nActive: " + isActive();
     }
     
     // Getters
@@ -43,6 +48,11 @@ public class Account
     public Date getCreationDate() {
         return creationDate;
     }
+
+
+    public boolean isActive() {
+        return isActive;
+    }
     
     // Setters
     public void setFullName(String fullName) {
@@ -51,6 +61,10 @@ public class Account
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
     }
   
 } 

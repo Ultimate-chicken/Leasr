@@ -26,8 +26,14 @@ public abstract class Contract {
         this.linkedAccount = linkedAccount;
         this.contractDate = new Date();
         this.isActive = true;
+
         this.productSelection = productSelection;
+
+        calculateTotalCost();
+
     }
+
+    protected abstract void calculateTotalCost();
 
     //Getters
     public String getContractID() { 
@@ -43,6 +49,8 @@ public abstract class Contract {
     }
     
     public ArrayList<Product> getProductSelection() {
+
+    public ArrayList<String> getProductSelection() {
         return productSelection;
     }
     
@@ -65,6 +73,22 @@ public abstract class Contract {
             appendedProductDetails += String.format("\n%s", productObject.toString());
         }
         return appendedProductDetails;
+    @Override
+    public String toString() {
+        StringBuilder contractDetails = new StringBuilder();
+
+        contractDetails.append("\n===== Contract Details =====\n");
+        contractDetails.append(String.format("Contract ID: %s\n", contractID));
+        contractDetails.append(String.format("Contract Type: %s\n", getContractType()));
+        contractDetails.append(String.format("Contract Date: %s\n", contractDate));
+
+        contractDetails.append(String.format("\nProduct(s) in Contract:\n %s", productDetails));
+
+        contractDetails.append(String.format("\nTotal Contract Value: %.2f€\n", totalCost));
+        contractDetails.append(String.format("Contract Status: %s\n", isActive ? "Active" : "Inactive"));
+
+        contractDetails.append("==============================");
+        return contractDetails.toString();
     }
 
     /** toString method for the abstract contract class. Under ideal circumstances, it will not be called because it will get overriden
