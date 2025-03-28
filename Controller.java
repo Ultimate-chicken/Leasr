@@ -32,7 +32,7 @@ public class Controller
         boolean exitTheMatrix = false;
 
         view.showSimpleMessage("\f");
-        
+
         while (exitTheMatrix == false) {
             view.showSimpleMessage("\nPlease, select what you want to do: \n\n1. Add new product \n2. View product details \n3. Change product details \n4. Delete product \n5. Show catalogue \n6. Show stock report \n7. Exit. \n\nYou choice:");
 
@@ -86,7 +86,7 @@ public class Controller
         String productName = view.getUserString("name");
         String productDescription = view.getUserString("description");
         String productSupplier = view.getUserString("supplier");
-        
+
         int productStock = view.getUserInt("stock");
         double productBasePrice = view.getUserDouble("basePrice");
 
@@ -173,7 +173,7 @@ public class Controller
     private void showStockReport() {
         view.showSimpleMessage("\f\nCurrent stock levels for all products (Name/ID: Stock):\n");
         for (Product productObject : productList) {
-            view.showSimpleMessage(String.format (productObject.getProductName() + "/" + productObject.getProductID() + ": " + productObject.getProductStock()));
+            view.showSimpleMessage(String.format (productObject.getProductName() + "/" + productObject.getProductID() + ": " + productObject.getProductStock()+"\n"));
         }
     }
 
@@ -219,7 +219,7 @@ public class Controller
     private void promptLogin() {
         view.showSimpleMessage("\nIf you want to select products, you must log in or create an account. Type LOGIN or CREATE if you want to proceed.");
         String userSelection = view.getUserString("loginOrCreate");
-        
+
         switch(userSelection) {
             case "login":
                 loginToAccount();
@@ -236,7 +236,7 @@ public class Controller
     private void createAccount() {
         Random random = new Random();
         String accountID = Integer.toString(1000 + random.nextInt(9999 - 1000));
-        
+
         String fullName = view.getUserString("newAccountName");
         String userEmail = view.getUserString("newAccountEmail");
 
@@ -263,7 +263,7 @@ public class Controller
         boolean backToMainMenu = false;
 
         while (!backToMainMenu) {
-            view.showSimpleMessage("\nPlease, select what you want to do: \n1. Purchase, lease, or rent-to-own products \n2. Terminate an existing contract \n3. View account details \n4. Exit \n\nYour choice: ");
+            view.showSimpleMessage("\n\nPlease, select what you want to do: \n1. Purchase, lease, or rent-to-own products \n2. Terminate an existing contract \n3. View account details \n4. Exit \n\nYour choice: ");
             int userSelection = view.getUserChoice();
 
             switch (userSelection) {
@@ -342,11 +342,11 @@ public class Controller
 
     private void createContract(int sessionIndex) {
         shoppingCart = new ArrayList<Product>();
-        
+
         showCatalogue();
         view.showSimpleMessage("\n\nPlease, select the products you want (Write product IDs, separated by commas): ");
         String[] shoppingCartReferences = userInput.nextLine().split(",");
-        
+
         for (String reference : shoppingCartReferences) {
             int productIndex = getProductIndex(reference.trim());
             if (productIndex != -1) {
@@ -387,7 +387,7 @@ public class Controller
         String monthlyCost = String.format("Monthly Payment: €%.2f\n", leaseContract.getAdjustedMonthlyCost());
         String totalCost = String.format("Total cost: €%.2f\n", leaseContract.calculateTotalCost());
         view.showSimpleMessage(depositAmount); view.showSimpleMessage(monthlyCost); view.showSimpleMessage(totalCost);
-        
+
         String acceptance = view.getUserString("acceptTerms");
 
         if (acceptance.equals("y")) {
@@ -446,34 +446,34 @@ public class Controller
     /** Test classes */
     private void createTestProducts() {
 
-        Product product1 = new Product("1001", "Refrigerator", "Large, stainless steel fridge", "CoolTech", 25, 800);
+        Product product1 = new Product("1001", "Refrigerator", "Large, stainless steel fridge", "Arrakis", 25, 800);
         productList.add(product1);
 
-        Product product2 = new Product("1002", "Washing Machine", "High-efficiency washer", "CleanCorp", 30, 601);
+        Product product2 = new Product("1002", "Washing Machine", "High-efficiency washer", "NUX", 30, 601);
         productList.add(product2);
 
-        Product product3 = new Product("1003", "Dishwasher", "Quiet, energy-saving dishwasher", "ShinyClean", 15, 451);
+        Product product3 = new Product("1003", "Dishwasher", "Quiet, energy-saving dishwasher", "Elysium", 15, 451);
         productList.add(product3);
 
-        Product product4 = new Product("1004", "Microwave Oven", "Countertop microwave with sensor cooking", "QuickHeat", 50, 150);
+        Product product4 = new Product("1004", "Microwave Oven", "Countertop microwave with sensor cooking", "Midlife Crisis", 50, 150);
         productList.add(product4);
 
-        Product product5 = new Product("1005", "Sofa", "Comfortable three-seater sofa", "CozyLiving", 10, 900);
+        Product product5 = new Product("1005", "Sofa", "Comfortable three-seater sofa", "Arasaka", 10, 900);
         productList.add(product5);
 
-        Product product6 = new Product("1006", "Dining Table", "Solid wood dining table for six", "WoodCraft", 8, 701);
+        Product product6 = new Product("1006", "Dining Table", "Solid wood dining table for six", "Alberto", 8, 701);
         productList.add(product6);
 
-        Product product7 = new Product("1007", "Bed Frame", "Queen-size platform bed frame", "SleepWell", 20, 550);
+        Product product7 = new Product("1007", "Bed Frame", "Queen-size platform bed frame", "Palpatine", 20, 550);
         productList.add(product7);
 
-        Product product8 = new Product("1008", "Bookshelf", "Tall, wooden bookshelf with adjustable shelves", "ShelfMaster", 35, 201);
+        Product product8 = new Product("1008", "Bookshelf", "Tall, wooden bookshelf with adjustable shelves", "Hanging Life", 35, 201);
         productList.add(product8);
 
-        Product product9 = new Product("1009", "Toaster", "2 slice toaster, stainless steel", "ToastTime", 60, 35);
+        Product product9 = new Product("1009", "Toaster", "2 slice toaster, stainless steel", "Kwisatz Haderach", 60, 35);
         productList.add(product9);
 
-        Product product10 = new Product("1010", "Blender", "High powered blender", "SmoothieKing", 40, 100);
+        Product product10 = new Product("1010", "Blender", "High powered blender", "Tequila Sunset", 40, 100);
         productList.add(product10);
     }
 }
