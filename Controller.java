@@ -13,7 +13,7 @@ public class Controller
     public ArrayList<Contract> contractList;
     public ArrayList<Product> productList;
     public ArrayList<Account> accountList;
-    public ArrayList<String> shoppingCart;
+    public ArrayList<Product> shoppingCart;
     Random random = new Random();
     Scanner userInput = new Scanner(System.in);
 
@@ -67,7 +67,7 @@ public class Controller
     }
 
     //gets index of product within arrayList, based on product ID.
-    public int getProductIndex(String productID) {
+    private int getProductIndex(String productID) {
         for(int arrayIndex = 0; arrayIndex<productList.size(); arrayIndex++) {
             if(productList.get(arrayIndex).getProductID().equals(productID)) {
                 return arrayIndex;
@@ -78,6 +78,7 @@ public class Controller
         return -1;
     }
 
+    private void addProduct() {
     public void addProduct() {
         System.out.print("\fPlease, insert details for the new product\n\n");
         String productID = Integer.toString(1000 + random.nextInt(9999 - 1000));
@@ -98,12 +99,14 @@ public class Controller
         productList.add(productObject);
     }
 
+    private void viewProductDetails() {
     public void viewProductDetails() {
         System.out.print("\nPlease, select the product where you want to view details (type product ID): ");
         int targetIndex = getProductIndex(userInput.nextLine());
         System.out.print(productList.get(targetIndex).toString());
     }
 
+    private void changeProductDetails() {
     public void changeProductDetails() {
         int selectedOption;
 
@@ -152,6 +155,7 @@ public class Controller
         System.out.println("\n\nProduct details have been succesfully changed.");
     }
 
+    private void deleteProduct() {
     public void deleteProduct() {
         System.out.print("\nPlease, insert the productID of the product you want to eliminate: "); String productID = userInput.nextLine();
 
@@ -167,6 +171,7 @@ public class Controller
         }
     }
 
+    private void showCatalogue() {
     public void showCatalogue() {
         System.out.println("\nCatalogue of all products");
         for (Product productObject : productList) {
@@ -174,8 +179,11 @@ public class Controller
             System.out.println();
         }
     }
-
+      
+    private void showStockReport() {
+      
     public void showStockReport() {
+      
         System.out.println("\f\nCurrent stock levels for all products (Name/ID: Stock):\n");
         for (Product productObject : productList) {
             System.out.println(productObject.getProductName() + "/" + productObject.getProductID() + ": " + productObject.getProductStock());
@@ -184,6 +192,7 @@ public class Controller
 
     /** Customer view. Allows */
     public void customerView() {
+        System.out.print("\f");
         boolean exitTheMatrix = false;
 
         while (!exitTheMatrix) {
@@ -216,6 +225,7 @@ public class Controller
         }
     }
 
+    private int getAccountIndex(String accountID) {
     public int getAccountIndex(String accountID) {
         for(int arrayIndex = 0; arrayIndex<accountList.size(); arrayIndex++) {
             if(accountList.get(arrayIndex).getAccountID().equals(accountID)) {
@@ -300,6 +310,7 @@ public class Controller
         }
     }
 
+    private void terminateContract(int sessionIndex) {        
     public void terminateContract(int sessionIndex) {        
         System.out.print("\n\nYour active recurring contracts: ");
 
@@ -327,7 +338,10 @@ public class Controller
         }
     }
 
+    private int getContractIndex(String contractID) {
+
     public int getContractIndex(String contractID) {
+
         for(int arrayIndex = 0; arrayIndex<contractList.size(); arrayIndex++) {
             if(contractList.get(arrayIndex).getContractID().equals(contractID)) {
                 return arrayIndex;
@@ -338,6 +352,7 @@ public class Controller
         return -1;
     }   
 
+    private void viewAccountDetails(int sessionIndex) {
     public void viewAccountDetails(int sessionIndex) {
 
         System.out.print(accountList.get(sessionIndex).toString());
@@ -357,6 +372,13 @@ public class Controller
 
     } 
 
+    private void createContract(int sessionIndex) {
+        shoppingCart = new ArrayList<Product>();
+        
+        showCatalogue();
+        System.out.print("\n\nPlease, select the products you want (Write product IDs, separated by commas): ");
+        String[] shoppingCartReferences = userInput.nextLine().split(",");
+        
     public void createContract(int sessionIndex) {
         shoppingCart = new ArrayList<String>();
         showCatalogue();
@@ -368,30 +390,30 @@ public class Controller
         for (String reference : shoppingCartReferences) {
             int productIndex = getProductIndex(reference.trim());
             if (productIndex != -1) {
-                shoppingCart.add(reference);
-                productDetails += productList.get(getProductIndex(reference)).toString() + "\n";
-                totalCartCost += productList.get(getProductIndex(reference)).getProductBasePrice();
+                shoppingCart.add(productList.get(productIndex));
             } 
         }
 
+        System.out.print("Note that price of products may change depending on contract type. \n");
         System.out.print("\nSelect contract type:\n1. Lease\n2. Rent-to-Own\n3. Purchase. \nYour choice: ");
         int contractType = Integer.parseInt(userInput.nextLine().trim());
 
         switch (contractType) {
             case 1:
-                createLeaseContract(sessionIndex, totalCartCost, productDetails);
+                createLeaseContract(sessionIndex);
                 break;
             case 2:
-                createRentToOwnContract(sessionIndex, totalCartCost, productDetails);
+                createRentToOwnContract(sessionIndex);
                 break;
             case 3: 
-                createPurchaseContract(sessionIndex, totalCartCost, productDetails);
+                createPurchaseContract(sessionIndex);
                 break;
             default:
                 System.out.println("Invalid contract type.");
         }
     }
 
+    private void createLeaseContract(int sessionIndex) {
     private void createLeaseContract(int sessionIndex, double totalCartCost, String productDetails) {
         System.out.print("\nEnter lease duration (months): ");
         int contractLengthMonths = Integer.parseInt(userInput.nextLine().trim());
@@ -402,9 +424,13 @@ public class Controller
         //contains dummy deposit and monthly payment
         Lease leaseContract = new Lease(contractID, shoppingCart, linkedAccount, totalCartCost, productDetails, 500, contractLengthMonths, 30);
 
-        System.out.printf("Deposit Amount: €%.2f\n", leaseContract.getDepositAmount());
-        System.out.printf("Monthly Payment: €%.2f\n", leaseContract.getMonthlyPayment());
+        Date contractDate = new Date();
+        Lease leaseContract = new Lease(contractID, shoppingCart, linkedAccount, contractLengthMonths, contractDate);
 
+        System.out.printf("Deposit Amount: €%.2f\n", leaseContract.getDepositAmount());
+        System.out.printf("Monthly Payment: €%.2f\n", leaseContract.getAdjustedMonthlyCost());
+        System.out.printf("Total cost: €%.2f\n", leaseContract.calculateTotalCost());
+        
         System.out.print("Do you accept these terms? (y/n): ");
         String acceptance = userInput.nextLine().toLowerCase();
 
@@ -417,6 +443,7 @@ public class Controller
         }
     }
 
+    private void createRentToOwnContract(int sessionIndex) {
     private void createRentToOwnContract(int sessionIndex, double totalCartCost, String productDetails) {
         System.out.print("\nEnter rent term (months): ");
         int contractLengthMonths = userInput.nextInt();
@@ -424,11 +451,12 @@ public class Controller
 
         String linkedAccount = accountList.get(sessionIndex).getAccountID();
         String contractID = Integer.toString(1000 + random.nextInt(9999 - 1000));
-        RentToOwn rentToOwnContract = new RentToOwn(contractID, shoppingCart, linkedAccount, totalCartCost, productDetails, 500, contractLengthMonths, 30);
+        Date contractDate = new Date();
+        RentToOwn rentToOwnContract = new RentToOwn(contractID, shoppingCart, linkedAccount, contractLengthMonths, contractDate);
 
-        System.out.printf("Deposit Amount: €%.2f\n", rentToOwnContract.getDepositAmount());
-        System.out.printf("Monthly Payment: €%.2f\n", rentToOwnContract.getMonthlyPayment());
-
+        System.out.printf("Monthly Payment: €%.2f\n", rentToOwnContract.getMonthlyCostWithInterest());
+        System.out.printf("Total cost: €%.2f\n", rentToOwnContract.calculateTotalCost());
+        
         System.out.print("Do you accept these terms? (y/n): ");
         String acceptance = userInput.nextLine().toLowerCase();
 
@@ -441,13 +469,13 @@ public class Controller
         }
     }
 
-    private void createPurchaseContract(int sessionIndex, double totalCartCost, String productDetails) {
+    private void createPurchaseContract(int sessionIndex) {
         String linkedAccount = accountList.get(sessionIndex).getAccountID();
         String contractID = Integer.toString(1000 + random.nextInt(9999 - 1000));
 
-        Purchase purchaseContract = new Purchase(contractID, shoppingCart, linkedAccount, totalCartCost, productDetails);
+        Purchase purchaseContract = new Purchase(contractID, shoppingCart, linkedAccount);
 
-        System.out.printf("\nTotal Purchase Cost: €%.2f\n", purchaseContract.getTotalCost());
+        System.out.printf("\nTotal Purchase Cost: €%.2f\n", purchaseContract.calculateTotalCost());
         System.out.printf("Warranty Length: %d months\n", purchaseContract.getWarrantyLengthMonths());
 
         System.out.print("Do you accept these terms? (y/n): ");
@@ -463,7 +491,7 @@ public class Controller
     }
 
     /** Test classes */
-    public void createTestProducts() {
+    private void createTestProducts() {
 
         Product product1 = new Product("1001", "Refrigerator", "Large, stainless steel fridge", "CoolTech", 25, 800);
         productList.add(product1);
@@ -496,6 +524,7 @@ public class Controller
         productList.add(product10);
     }
 
+    /*private void createTestAccounts() {
     /*public void createTestAccounts() {
         Account newAccount = new Account("9994", "Otto Von Bismarck", "bismarck@gmail.de", new Date());
         accountList.add(newAccount);
@@ -518,6 +547,7 @@ public class Controller
         System.out.printf("Account creation successful! Your account ID is %s\n", "4321");
     }
 
+    /* private void createTestContracts() {
     /* public void createTestContracts() {
     RentToOwn rentToOwnContract = new RentToOwn(contractID, shoppingCart, linkedAccount, totalCartCost, productDetails, contractLengthMonths);
     RentToOwn rentToOwnContract = new RentToOwn("9994", null, "techFanatic", 799.99, "Premium Noise-Cancelling Headphones - Wireless, Bluetooth 5.0, 30-hour battery.", 24);
@@ -525,6 +555,7 @@ public class Controller
     Purchase purchaseContract = new Purchase(contractID, shoppingCart, linkedAccount, totalCartCost, productDetails);
     }  
 
+    private void createTestAccounts() {
     public void createTestAccounts() {
         Account account1 = new Account("A1001", "John Doe", "john@example.com", new Date());
         Account account2 = new Account("A1002", "Jane Roe", "jane@example.com", new Date());
@@ -534,6 +565,9 @@ public class Controller
         accountList.add(account2);
         accountList.add(account3);
         accountList.add(account4);
+    }
+
+    private void createTestLeases() {
     }*/
 
     public void createTestLeases() {
@@ -559,12 +593,17 @@ public class Controller
                 productDetails += p.toString() + "\n";
                 totalCartCost += p.getProductBasePrice();
             }
+        } 
         }
 
         //get a dummy account and if none exist use the id A1000
         String linkedAccount = accountList.size() > 0 ? accountList.get(0).getAccountID() : "A1000";
 
         String contractID1 = "L1001";
+        Lease lease1 = new Lease(contractID1, dummySelection, linkedAccount, totalCartCost, productDetails, 12);
+
+        String contractID2 = "L1002";
+        Lease lease2 = new Lease(contractID2, dummySelection, linkedAccount, totalCartCost, productDetails, 24);
         Lease lease1 = new Lease(contractID1, dummySelection, linkedAccount, totalCartCost, productDetails, 12, 5, 50);
 
         String contractID2 = "L1002";
@@ -576,5 +615,5 @@ public class Controller
         System.out.println("Test leases created:");
         System.out.println(lease1.toString());
         System.out.println(lease2.toString());
-    }    
+    }     */
 }

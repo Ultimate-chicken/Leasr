@@ -1,21 +1,24 @@
 import java.util.ArrayList;
 
-/** This class contains fields and methods regarding products that are included in leases. The structure is basic. It includes constructors,
- * 
- * @author (your name)
- * @version (a version number or a date)
- */
+/** This class contains fields and methods regarding products that are included in leases. It includes a constructor, toString, getters,
+ * and setters. The fields used are simple strings used to describe a product and a product price, which will be used to calculate total
+ * contract cost. The most important field here is product ID, which is generated automatically when a product is created, but will be used
+ * throughout the program in order to locate products within the productList arrayList (specifically, with the getProductIndex() method.
+ * Two extra fields (stock and product status) can be utilised in the future to expand program functionalities by toggling/untoggling 
+ * product status and by changing stock once a lease is executed.
+ * @author (Noah, Max) @version (28/03/2025) */
 public class Product
 {
     private String productID;
     private String productName;
     private String productDescription;
     private String productSupplier;
-    private int productStock;
     private double productBasePrice;
+    
+    //for the future
+    private int productStock;
     private boolean productStatus;
 
-    /** Constructor for objects of class Product */
     public Product(String productID, String productName, String productDescription, String productSupplier, int productStock,
     double productBasePrice)
     {
@@ -27,20 +30,19 @@ public class Product
         this.productBasePrice = productBasePrice;
         this.productStatus = true;
 
-        System.out.println("Product Creation successfull!\n");
+        System.out.println("Product Creation successfull!");
         System.out.println(this.toString());
         System.out.println("\n\n");
     }
 
-    //WORKS
     @Override
     public String toString() {
-        return "\nID: " + this.getProductID() + 
+        return "ID: " + this.getProductID() + 
         " Name: " + this.getProductName() +
         " Description: " + this.getProductDescription() +
         " Supplier: " + this.getProductSupplier() + 
         " Stock: " + this.getProductStock() + 
-        " Base Price: " + String.format("%.2f€", this.getProductBasePrice()) +
+        " Cash Price: " + String.format("%.2f€", this.getProductBasePrice()) +
         " Status: " + this.getProductStatus();
     }
 
