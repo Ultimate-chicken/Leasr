@@ -1,19 +1,14 @@
 import java.util.Scanner;
 
 /**
- * Write a description of class customerView here.
- *
- * @author (your name)
- * @version (a version number or a date)
- */
+ * This class implements the view part of our model. It is responsible for all input and output required within the controller. The methods
+ * included here are used in accordance with the data type required (string, int, double) as well as the pattern (some methods require 
+ * only input, other methods require only output, and some require both). The main mechanic here is the switch statement, so that a 
+ * different input/output is inserted depending on the "case" inserted by the controller call method.  @author (Noah, Max) 
+ * @version (28/03/2025) */
 public class viewClass
 {
-    Scanner userInput = new Scanner(System.in);
-    
-    public viewClass()
-    {
-        
-    }
+    private Scanner userInput = new Scanner(System.in);
     
     //user input with validation. Only input. 
     public int getUserChoice() {
@@ -124,5 +119,4 @@ public class viewClass
     public void showFormattedMessage(String message, String reference) {
         System.out.printf(message, reference);
     }
-    
 }
