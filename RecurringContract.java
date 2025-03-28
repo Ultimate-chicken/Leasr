@@ -21,16 +21,7 @@ public abstract class RecurringContract extends Contract {
         this.contractStartDate = contractDate;
         this.contractLengthMonths = contractLengtMonths;
         this.contractEndDate = getContractEndDate();
-    protected int remainingMonths;
-    protected double remainingTotalCost;
-    
-    public RecurringContract(String contractID, ArrayList<String> productSelection, String linkedAccount, double totalCartCost, String productDetails, int contractLengthMonths) {
-        super(contractID, productSelection, linkedAccount, totalCartCost, productDetails);
-        this.contractLengthMonths = contractLengthMonths;
-        this.remainingMonths = contractLengthMonths;
-        this.remainingTotalCost = totalCartCost;
     }
-
     
     /** This method calculates total cost from the array list of product objects and then divides by the length of the contract that the
        user selected. This serves as the basis for the subclasses, as monthly payments are adjusted downwards for lease and upwards for
@@ -40,9 +31,6 @@ public abstract class RecurringContract extends Contract {
         
         for (Product productObject : productSelection) {
             runningTotal += productObject.getProductBasePrice();
-    public double getRemainingAmount(int monthsPaid) {
-        if (monthsPaid < 0 || monthsPaid > contractLengthMonths) {
-            //add some comment or smthn
         }
         
         monthlyPayment = runningTotal / contractLengthMonths;
@@ -63,28 +51,5 @@ public abstract class RecurringContract extends Contract {
     
     public Date getContractStartDate() {
         return contractStartDate;
-    /*public double getDepositAmount() {
-        return depositAmount;
-    }*/
-
-    public void advanceContractByMonth() {
-        if (remainingMonths > 0) {
-            remainingMonths--;
-
-            remainingTotalCost -= monthlyPayment;
-
-            if (remainingMonths == 0) {
-                //isActive = false;
-            }
-        }
-    }
-
-    public int getRemainingMonths() {
-        return remainingMonths;
-    }
-
-    // Getter for remaining total cost
-    public double getRemainingTotalCost() {
-        return remainingTotalCost;
     }
 }

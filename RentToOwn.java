@@ -40,24 +40,5 @@ public class RentToOwn extends RecurringContract {
     
     public double getMonthlyCostWithInterest() {
         return this.monthlyCostWithInterest;
-    protected void calculateTotalCost() {
-        double basePrice = getTotalCost();
-        this.depositAmount = basePrice * DEPOSIT_PERCENTAGE;
-        double remainingBalance = basePrice - depositAmount;
-        double finalCost = remainingBalance * (1 + DEFAULT_INTEREST_RATE);
-        this.monthlyPayment = finalCost / getTotalPaymentPeriods();
-    }
-
-    /*@Override
-    public String toString() {
-    return "Rent-to-Own " + super.toString() +
-    "\nMonthly Payment: " + String.format("%.2f", monthlyPayment) + "€" +
-    "\nTotal Payment Periods: " + totalPaymentPeriods + " months" +
-    "\nDeposit Amount: " + String.format("%.2f", depositAmount) + "€";
-    }*/
-
-    @Override
-    protected String getContractType() {
-        return "Rent-To-Own";
     }
 }
